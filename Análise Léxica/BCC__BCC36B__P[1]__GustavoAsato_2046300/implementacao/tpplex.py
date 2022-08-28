@@ -15,33 +15,33 @@ log = logging.getLogger()
 tokens = [
     "ID",  # identificador
     # numerais
-    "NUM_NOTACAO_CIENTIFICA",  # ponto flutuante em notaçao científica
-    "NUM_PONTO_FLUTUANTE",  # ponto flutuate
-    "NUM_INTEIRO",  # inteiro
+    "NUM_NOTACAO_CIENTIFICA",   # ponto flutuante em notaçao científica
+    "NUM_PONTO_FLUTUANTE",      # ponto flutuate
+    "NUM_INTEIRO",              # inteiro
     # operadores binarios
-    "MAIS",  # +
-    "MENOS",  # -
-    "MULTIPLICACAO",  # *
-    "DIVISAO",  # /
-    "E_LOGICO",  # &&
-    "OU_LOGICO",  # ||
-    "DIFERENCA",  # <>
-    "MENOR_IGUAL",  # <=
-    "MAIOR_IGUAL",  # >=
-    "MENOR",  # <
-    "MAIOR",  # >
-    "IGUAL",  # =
+    "MAIS",                     # +
+    "MENOS",                    # -
+    "MULTIPLICACAO",            # *
+    "DIVISAO",                  # /
+    "E_LOGICO",                 # &&
+    "OU_LOGICO",                # ||
+    "DIFERENCA",                # <>
+    "MENOR_IGUAL",              # <=
+    "MAIOR_IGUAL",              # >=
+    "MENOR",                    # <
+    "MAIOR",                    # >
+    "IGUAL",                    # =
     # operadores unarios
-    "NEGACAO",  # !
+    "NEGACAO",                  # !
     # simbolos
-    "ABRE_PARENTESE",  # (
-    "FECHA_PARENTESE",  # )
-    "ABRE_COLCHETE",  # [
-    "FECHA_COLCHETE",  # ]
-    "VIRGULA",  # ,
-    "DOIS_PONTOS",  # :
-    "ATRIBUICAO",  # :=
-    # 'COMENTARIO', # {***}
+    "ABRE_PARENTESE",           # (
+    "FECHA_PARENTESE",          # )
+    "ABRE_COLCHETE",            # [
+    "FECHA_COLCHETE",           # ]
+    "VIRGULA",                  # ,
+    "DOIS_PONTOS",              # :
+    "ATRIBUICAO",               # :=
+    # 'COMENTARIO',             # {***}
 ]
 
 reserved_words = {
