@@ -2,24 +2,11 @@
     "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
     "name": "TPP",
     "patterns": [
-        {
-            "include": "#comments"
-        },
-        {
-            "include": "#operators"
-        },
-        {
-            "include": "#types"
-        },
-        {
-            "include": "#numbers"
-        },
-        {
-            "include": "#functions"
-        },
-        {
-            "include": "#statements"
-        }
+        {"include": "#comments"},
+        {"include": "#operators"},
+        {"include": "#numbers"},
+        {"include": "#functions"},
+        {"include": "#statements"}
     ],
     "repository": {
         "comments": {
@@ -40,14 +27,6 @@
                 {
                     "name": "keyword.operator.symbols.tpp",
                     "match": ":=|:|,"
-                }
-            ]
-        },
-        "types": {
-            "patterns": [
-                {
-                    "name": "variable.language.tpp",
-                    "match": "\\b(inteiro|flutuante)\\b"
                 }
             ]
         },
