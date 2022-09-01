@@ -1,0 +1,84 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "TPP",
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#operators"
+        },
+        {
+            "include": "#types"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#functions"
+        },
+        {
+            "include": "#statements"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.character.tpp",
+                    "begin": "{",
+                    "end": "}"
+                }
+            ]
+        },
+        "operators": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.binary.tpp",
+                    "match": "<>|<=|>=|<|>|= | \\+ | \\- | \\/ | \\*| &&| \\|\\| "
+                },
+                {
+                    "name": "keyword.operator.symbols.tpp",
+                    "match": ":=|:|,"
+                }
+            ]
+        },
+        "types": {
+            "patterns": [
+                {
+                    "name": "variable.language.tpp",
+                    "match": "\\b(inteiro|flutuante)\\b"
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.integer.tpp",
+                    "match": "\\d+"
+                },
+                {
+                    "name": "constant.numeric.float.tpp",
+                    "match": "\\b(\\d+ \\. \\d+)\\b"
+                }
+            ]
+        },
+        "functions": {
+            "patterns": [
+                {
+                    "name": "entity.name.function.member.tpp",
+                    "match": "\\b(escreva|leia|fim|retorna)\\b"
+                } 
+            ]
+        },
+        "statements": {
+            "patterns": [
+                {
+                    "name": "keyword.control.tpp",
+                    "match": "\\b(se|então|senão|repita|até)\\b"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.tpp"
+}
