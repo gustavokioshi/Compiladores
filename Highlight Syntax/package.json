@@ -1,0 +1,25 @@
+{
+  "name": "ttp-Lang",
+  "displayName": "",
+  "description": "Highlight Syntax para ttp Lang",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "ttp",
+      "aliases": ["TTP", "ttp"],
+      "extensions": [".ttp"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "ttp",
+      "scopeName": "source.ttp",
+      "path": "./syntaxes/ttp.tmLanguage.json"
+    }]
+  }
+}
