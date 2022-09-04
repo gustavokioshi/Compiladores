@@ -24,6 +24,16 @@ Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez
 | IGUAL         | =    |
 | NEGACAO       | !    |
 
+
+|token          |simbolo|
+|---------------|------|
+| ABRE_PARENTESE| (    |
+| FECHA_PARENTESE| )    |
+| ABRE_COLCHETE | [    |
+| FECHA_COLCHETE|  ]   |
+| VIRGULA      | ,   |
+| DOIS_PONTOS    | :  |
+| ATRIBUICAO     | :=  |
 ## 3 Linguagens de programação para a implementação
 ### 3.1 Python
 O Python é uma linguagem de programação de alto nível utilizada em diferentes tipos de aplicações, em Machine Learning, no desenvolvimento de jogos. Sendo necessario para utilizar para poder compilar os codigos.
