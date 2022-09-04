@@ -9,6 +9,7 @@ A linguagem T++ possui os seguintes tipos suportados interio e flutuante podendo
 Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez que aparece no codigo a ser compilado, cada token possui uma ação especifica podendo tomar diversas descisões com determinados parametros que foram submetidos.
 ### 2.2 Operadores 
 | MAIS          | +    |
+|---------------|------|
 | MENOS         | -    |
 | MULTIPLICACAO | *    |
 | DIVISAO       | /    |
