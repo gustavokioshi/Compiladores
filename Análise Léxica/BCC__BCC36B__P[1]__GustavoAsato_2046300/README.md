@@ -7,7 +7,9 @@ Nessa atividade desenvolvida durante a disciplina de Compiladores tem em foco de
 A linguagem T++ possui os seguintes tipos suportados interio e flutuante podendo ser armazenados em arrays unidimensional ou bidimensional. O tipo de aquivo para ser reconhecido como .tpp no final do arquivo.
 ### 2.1 Tokens
 Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez que aparece no codigo a ser compilado, cada token possui uma ação especifica podendo tomar diversas descisões com determinados parametros que foram submetidos.
-### 2.2 Operadores 
+### 2.2 Tabela de tokens
+
+##### Operadores
 |token          |simbolo|
 |---------------|------|
 | MAIS          | +    |
@@ -24,7 +26,7 @@ Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez
 | IGUAL         | =    |
 | NEGACAO       | !    |
 
-
+##### simbolos
 |token          |simbolo|
 |---------------|------|
 | ABRE_PARENTESE| (    |
@@ -34,6 +36,22 @@ Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez
 | VIRGULA      | ,   |
 | DOIS_PONTOS    | :  |
 | ATRIBUICAO     | :=  |
+
+##### palavras reservadas
+|token          |simbolo|
+|---------------|------|
+| SE|se   |
+| ENTAO| então   |
+| SENAO | senão   |
+| FIM| fim  |
+| REPITA      | repita  |
+| FLUTUANTE    | flutuante |
+| RETORNA     | retorna |
+| ATE| até  |
+| LEIA      | leia  |
+| ESCREVA    | escreva  |
+| INTEIRO     |inteiro |
+
 ## 3 Linguagens de programação para a implementação
 ### 3.1 Python
 O Python é uma linguagem de programação de alto nível utilizada em diferentes tipos de aplicações, em Machine Learning, no desenvolvimento de jogos. Sendo necessario para utilizar para poder compilar os codigos.
