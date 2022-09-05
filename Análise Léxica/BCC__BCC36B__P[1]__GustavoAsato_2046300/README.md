@@ -10,6 +10,7 @@ Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez
 ### 2.2 Tabela de tokens
 
 ##### Operadores
+Os tokens de operadores é responsavel pela a mudança e comparação de identificadores. 
 |token          |simbolo|
 |---------------|------|
 | MAIS          | +    |
@@ -27,6 +28,7 @@ Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez
 | NEGACAO       | !    |
 
 ##### simbolos
+Na gramatica utilizada esses simbolos são utilizados para dar ordem a identificadores e preferencia de que opreração realizara primeiro.
 |token          |simbolo|
 |---------------|------|
 | ABRE_PARENTESE| (    |
@@ -38,6 +40,7 @@ Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez
 | ATRIBUICAO     | :=  |
 
 ##### palavras reservadas
+Alguns tokens da Linguagem T++ são identificados como palavras reservadas que por sua vez não são possiveis de serem utilizados como identificadores como ela é responsavel pela gramatica da linguagem sendo representada na figura abaixo.
 |token          |simbolo|
 |---------------|------|
 | SE|se   |
@@ -58,3 +61,5 @@ O Python é uma linguagem de programação de alto nível utilizada em diferente
 ### 3.2 PLY
 O PLY é uma biblioteca para python que permite desenvolver um compilador sendo necessario durante todo o desenvolvimento do projeto 
 ## 4 Testes
+###4.1 Autômato
+Durante todo o codigo a ser compilado por definição o processo de identificação dos tokens utiliza autômaros finitos e expressões regulares 
