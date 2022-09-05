@@ -2,6 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
     "name": "TPP",
     "patterns": [
+<<<<<<< HEAD
         {
             "include": "#comments"
         },
@@ -17,6 +18,13 @@
         {
             "include": "#statements"
         }
+=======
+        {"include": "#comments"},
+        {"include": "#operators"},
+        {"include": "#numbers"},
+        {"include": "#functions"},
+        {"include": "#statements"}
+>>>>>>> 984ce5ae7d284c4f4be39aaaef672a0439b72114
     ],
     "repository": {
         "comments": {
