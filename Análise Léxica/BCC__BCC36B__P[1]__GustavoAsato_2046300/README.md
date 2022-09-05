@@ -60,9 +60,8 @@ Alguns tokens da Linguagem T++ são identificados como palavras reservadas que p
 O Python é uma linguagem de programação de alto nível utilizada em diferentes tipos de aplicações, em Machine Learning, no desenvolvimento de jogos. Sendo necessario para utilizar para poder compilar os codigos.
 ### 3.2 PLY
 O PLY é uma biblioteca para python que permite desenvolver um compilador sendo necessario durante todo o desenvolvimento do projeto 
-## 4 Testes
-### 4.1 Autômato
+### 3.3 Autômato
 Durante todo o codigo a ser compilado por definição o processo de identificação dos tokens utiliza autômaros finitos e expressões regulares. Que por sua vez tem como objetivo identificar todas as cadeias de caracteres.
-
-### 4.2 Compila o codigo 
+## 4 Testes
+### 4.1 Compila o codigo 
 Essa é a primeira etapa que corre checando se o codigo esta correto na sua escrita. Se não possui nenhum erro de sintaxe como algum indice perdido ou não atribuido para determinado token.
