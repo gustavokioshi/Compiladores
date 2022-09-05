@@ -9,9 +9,6 @@
             "include": "#operators"
         },
         {
-            "include": "#types"
-        },
-        {
             "include": "#numbers"
         },
         {
@@ -40,14 +37,6 @@
                 {
                     "name": "keyword.operator.symbols.tpp",
                     "match": ":=|:|,"
-                }
-            ]
-        },
-        "types": {
-            "patterns": [
-                {
-                    "name": "variable.language.tpp",
-                    "match": "\\b(inteiro|flutuante)\\b"
                 }
             ]
         },
