@@ -71,6 +71,7 @@ Nesse exemplo testara o codigo fatorial.tpp que realiza o fatorial do numero 3 d
 
 ### 3.5 Varedura
 A varedura serve como como um corretor checando o codigo vendo se possui algum erro da gramática no caso o analizador lexico serve para checar todos os tokens utilizados no codigo sendo um exemplo mostrado na figura abaixo do fatorial.tpp 
+
 ![alt text](fatorial1.png)
 ## 4 Testes
 ### 4.1 Execução do codigo
