@@ -78,3 +78,7 @@ A varedura serve como como um corretor checando o codigo vendo se possui algum e
 Para testar codigo foi utilizado todos os testes dispinibilizados codigo de entrada da linguagem T++ comparando com a saida de cada arquivo corespondente.
 
 ![alt text](testes.png)
+## 5 Referencias
+https://pt.slideshare.net/dabeaz/writing-parsers-and-compilers-with-ply
+https://www.dabeaz.com/ply/ply.html
+
