@@ -64,9 +64,12 @@ O PLY é uma biblioteca para python que permite desenvolver um compilador sendo 
 Durante todo o codigo a ser compilado por definição o processo de identificação dos tokens utiliza autômaros finitos e expressões regulares. Que por sua vez tem como objetivo identificar todas as cadeias de caracteres.
 Na figura abaixo demonstra um autômato da palavra "retorna"
 ![alt text](teste.drawio.png)
+### 3.4 Fatorial
+Nesse exemplo testara o codigo fat.tpp que realiza o fatorial do numero 3 demostrado na figura abaixo
 
+![alt text](fatoral.jpg)
 ## 4 Testes
 ### 4.1 Execução do codigo
-Para testar codigo foi utilizado um codigo de entrada da linguagem T++ que realiza o fatorial
+Para testar codigo foi utilizado todos os testes dispinibilizados codigo de entrada da linguagem T++ comparando com a saida de cada arquivo corespondente.
 
 ![alt text](testes.png)
