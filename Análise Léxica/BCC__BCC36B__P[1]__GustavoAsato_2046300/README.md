@@ -68,4 +68,5 @@ Na figura abaixo demonstra um autômato da palavra "retorna"
 ## 4 Testes
 ### 4.1 Execução do codigo
 Para testar codigo foi utilizado um codigo de entrada da linguagem T++ que realiza o fatorial
+
 ![alt text](fatoral.jpg)
