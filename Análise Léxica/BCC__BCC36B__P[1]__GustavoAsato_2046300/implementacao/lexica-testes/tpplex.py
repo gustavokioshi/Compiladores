@@ -67,10 +67,8 @@ sinal = r"([\-\+]?)"
 """ 
     id deve começar com uma letra
 """
-id = (
-    r"(" + letra + r"(" + digito + r"+|_|" + letra + r")*)"
-)  # o mesmo que '((letra)(letra|_|([0-9]))*)'
-
+id = (r"(" + letra + r"(" + digito + r"+|_|" + letra + r")*)")  
+# o mesmo que '((letra)(letra|_|([0-9]))*)'
 # inteiro = r"(" + sinal + digito + r"+)"
 # inteiro = r"(" + digito + r"+)"
 inteiro = r"\d+"
