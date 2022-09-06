@@ -70,7 +70,7 @@ Nesse exemplo testara o codigo fatorial.tpp que realiza o fatorial do numero 3 d
 ![alt text](fatoral.jpg)
 
 ### 3.5 Varedura
-
+![alt text](ftorial1.png)
 ## 4 Testes
 ### 4.1 Execução do codigo
 Para testar codigo foi utilizado todos os testes dispinibilizados codigo de entrada da linguagem T++ comparando com a saida de cada arquivo corespondente.
