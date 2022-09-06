@@ -80,5 +80,8 @@ Para testar codigo foi utilizado todos os testes dispinibilizados codigo de entr
 ![alt text](testes.png)
 ## 5 Referencias
 https://pt.slideshare.net/dabeaz/writing-parsers-and-compilers-with-ply
+
 https://www.dabeaz.com/ply/ply.html
+
+https://docs.python.org/3/
 
