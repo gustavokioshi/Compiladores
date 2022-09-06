@@ -66,5 +66,6 @@ Na figura abaixo demonstra um autômato da palavra "retorna"
 ![alt text](teste.drawio.png)
 
 ## 4 Testes
-### 4.1 Compila o codigo 
-Essa é a primeira etapa que corre checando se o codigo esta correto na sua escrita. Se não possui nenhum erro de sintaxe como algum indice perdido ou não atribuido para determinado token.
+### 4.1 Execução do codigo
+Para testar codigo foi utilizado um codigo de entrada da linguagem T++ que realiza o fatorial
+![alt text](fatorial.jpg)
