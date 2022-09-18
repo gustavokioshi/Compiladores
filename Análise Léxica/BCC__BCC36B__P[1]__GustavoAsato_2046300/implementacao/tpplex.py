@@ -163,17 +163,15 @@ def define_column(input, lexpos):
 
 def t_error(token):
 
-    # file = token.lexer.filename
+    #file = token.lexer.filename
     line = token.lineno
-    # column = define_column(token.lexer.backup_data, token.lexpos)
     message = "Caracter inválido '%s'" % token.value[0]
 
-    # print(f"[{file}]:[{line},{column}]: {message}.")
-    print(message)
+    print(f"linha {line}: {message}.")
 
     token.lexer.skip(1)
 
-    # token.lexer.has_error = True
+    token.lexer.has_error = True
 
 
 def main():
