@@ -824,8 +824,8 @@ def p_error(p):
 
     if p:
         token = p
-        print("Erro:[{line},{column}]: Erro próximo ao token '{token}'".format(
-            line=token.lineno, column=token.lineno, token=token.value))
+        print("Erro:[{line}]: Erro próximo ao token '{token}'".format(
+            line=token.lineno, token=token.value))
 
 # Programa principal.
 
