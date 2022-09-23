@@ -260,6 +260,13 @@ def p_cabecalho_error(p):
                 | error ABRE_PARENTESE lista_parametros FECHA_PARENTESE corpo FIM 
     """
 
+    error_line = p.lineno(2)
+    father = MyNode(name='ERROR::{}'.format(error_line), type='ERROR')
+    logging.error(
+        "Syntax error parsing index rule at line' {}".format(error_line))
+    parser.errok()
+    p[0] = father
+
 def p_lista_parametros(p):
     """lista_parametros : lista_parametros VIRGULA parametro
                     | parametro
@@ -309,6 +316,13 @@ def p_parametro_error(p):
                 | parametro error FECHA_COLCHETE
                 | parametro ABRE_COLCHETE error
     """
+
+    error_line = p.lineno(2)
+    father = MyNode(name='ERROR::{}'.format(error_line), type='ERROR')
+    logging.error(
+        "Syntax error parsing index rule at line' {}".format(error_line))
+    parser.errok()
+    p[0] = father
 
 
 def p_corpo(p):
@@ -391,7 +405,13 @@ def p_se_error(p):
         | SE expressao ENTAO corpo error corpo FIM
         | SE expressao ENTAO corpo SENAO corpo
     """
-
+    
+    error_line = p.lineno(2)
+    father = MyNode(name='ERROR::{}'.format(error_line), type='ERROR')
+    logging.error(
+        "Syntax error parsing index rule at line' {}".format(error_line))
+    parser.errok()
+    p[0] = father
 
 def p_repita(p):
     """repita : REPITA corpo ATE expressao"""
@@ -416,6 +436,13 @@ def p_repita_error(p):
     """repita : error corpo ATE expressao
             | REPITA corpo error expressao
     """
+
+    error_line = p.lineno(2)
+    father = MyNode(name='ERROR::{}'.format(error_line), type='ERROR')
+    logging.error(
+        "Erro de sintaxe na estrutura de repetição, localizado na linha' {}".format(error_line))
+    parser.errok()
+    p[0] = father
 
 def p_atribuicao(p):
     """atribuicao : var ATRIBUICAO expressao"""
@@ -457,6 +484,12 @@ def p_leia_error(p):
     """leia : LEIA ABRE_PARENTESE error FECHA_PARENTESE
     """
 
+    error_line = p.lineno(2)
+    father = MyNode(name='ERROR::{}'.format(error_line), type='ERROR')
+    logging.error(
+        "Syntax error parsing index rule at line' {}".format(error_line))
+    parser.errok()
+    p[0] = father
 
 def p_escreva(p):
     """escreva : ESCREVA ABRE_PARENTESE expressao FECHA_PARENTESE"""
@@ -704,6 +737,13 @@ def p_fator(p):
 def p_fator_error(p):
     """fator : ABRE_PARENTESE error FECHA_PARENTESE
         """
+
+    error_line = p.lineno(2)
+    father = MyNode(name='ERROR::{}'.format(error_line), type='ERROR')
+    logging.error(
+        "Syntax error parsing index rule at line' {}".format(error_line))
+    parser.errok()
+    p[0] = father
 
 def p_numero(p):
     """numero : NUM_INTEIRO
