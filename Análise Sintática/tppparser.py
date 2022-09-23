@@ -590,7 +590,7 @@ def p_operador_relacional(p):
     """operador_relacional : MENOR
                             | MAIOR
                             | IGUAL
-                            | DIFERENTE 
+                            | DIFERENCA 
                             | MENOR_IGUAL
                             | MAIOR_IGUAL
     """
@@ -607,7 +607,7 @@ def p_operador_relacional(p):
         filho = MyNode(name='IGUAL', type='IGUAL', parent=pai)
         filho_sym = MyNode(name=p[1], type='SIMBOLO', parent=filho)
     elif p[1] == "<>":
-        filho = MyNode(name='DIFERENTE', type='DIFERENTE', parent=pai)
+        filho = MyNode(name='DIFERENCA', type='DIFERENCA', parent=pai)
         filho_sym = MyNode(name=p[1], type='SIMBOLO', parent=filho)
     elif p[1] == "<=":
         filho = MyNode(name='MENOR_IGUAL', type='MENOR_IGUAL', parent=pai)
@@ -638,42 +638,42 @@ def p_operador_soma(p):
 
 
 def p_operador_logico(p):
-    """operador_logico : E
-                    | OU
+    """operador_logico : E_LOGICO
+                    | OU_LOGICO
     """
     if p[1] == "&&":
-        filho = MyNode(name='E', type='E')
+        filho = MyNode(name='E_LOGICO', type='E_LOGICO')
         filho_lexema = MyNode(name=p[1], type='SIMBOLO', parent=filho)
         p[0] = MyNode(name='operador_logico',
                       type='OPERADOR_LOGICO', children=[filho])
     else:
-        filho = MyNode(name='OU', type='OU')
+        filho = MyNode(name='OU_LOGICO', type='OU_LOGICO')
         filho_lexema = MyNode(name=p[1], type='SIMBOLO', parent=filho)
         p[0] = MyNode(name='operador_logico',
                       type='OPERADOR_SOMA', children=[filho])
 
 
 def p_operador_negacao(p):
-    """operador_negacao : NAO"""
+    """operador_negacao : NEGACAO"""
 
     if p[1] == "!":
-        filho = MyNode(name='NAO', type='NAO')
+        filho = MyNode(name='NEGACAO', type='NEGACAO')
         negacao_lexema = MyNode(name=p[1], type='SIMBOLO', parent=filho)
         p[0] = MyNode(name='operador_negacao',
                       type='OPERADOR_NEGACAO', children=[filho])
 
 
 def p_operador_multiplicacao(p):
-    """operador_multiplicacao : VEZES
-                            | DIVIDE
+    """operador_multiplicacao : MULTIPLICACAO
+                            | DIVISAO
         """
     if p[1] == "*":
-        filho = MyNode(name='VEZES', type='VEZES')
+        filho = MyNode(name='MULTIPLICACAO', type='MULTIPLICACAO')
         vezes_lexema = MyNode(name=p[1], type='SIMBOLO', parent=filho)
         p[0] = MyNode(name='operador_multiplicacao',
                       type='OPERADOR_MULTIPLICACAO', children=[filho])
     else:
-       divide = MyNode(name='DIVIDE', type='DIVIDE')
+       divide = MyNode(name='DIVISAO', type='DIVISAO')
        divide_lexema = MyNode(name=p[1], type='SIMBOLO', parent=divide)
        p[0] = MyNode(name='operador_multiplicacao',
                      type='OPERADOR_MULTIPLICACAO', children=[divide])
