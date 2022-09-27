@@ -47,7 +47,7 @@ A gramatica da linguagem TPP as regras são definidas pelo padrão BNF(Backus Na
 |chamada_funcao ::=|ID ABRE_PARENTESE lista_argumentos|FECHA_PARENTESE|
 |lista_argumentos  ::=|lista_argumentos VIRGULA expressao|expressao|vazio|
 
-Na figura abaixo utilizou o token acao para demostrar como ele realizava a chama de outros tokens na tabela de tokens formando uma arvore durante sua chama.
+Na figura abaixo utilizou o token acao para demostrar como ele realizava a chama de outros tokens na tabela de tokens formando uma arvore. Sendo possivel selecionar um desses tokens expressao, declaracao_variaveis, se, repita, leia, escreva, retorna, erro.
 
 <img src="acao.png" style="height: 300px; width:200px;"/>
 
