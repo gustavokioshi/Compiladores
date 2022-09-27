@@ -8,7 +8,7 @@ O Análisador Sintático é uma parte do compilador que visa a partir os tokens 
 Nessa atividade foi desenvolvido um analizador sintatico para alinguagem TPP, com detecção de erros sendo disponibilizado um codigo base pelo professor, sendo oferecido casos de testes para ter melhor conhecimento sobre a atividade. sendo desenvolvoda em python com as seguintes bibliotecas PLY servindo para iniciar o compilador, anytree mostrar a arvore que a o teste gera, graphviz mostrar em .png as arvores geradas no windows.
 ### 3 Descrição da gramática
 A gramatica da linguagem TPP as regras são definidas pelo padrão BNF(Backus Naur Form) ás regras estão disponibilizados na tabela de tokens.
-| tokens  | tokens   | tokens   | tokens   | tokens   | tokens   | tokens   | tokens   | tokens   |
+|token|token|token|token|token|token|token|token|tokens|
 |:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|
 |programa ::= |lista_declaracoes|
 |lista_declaracoes ::= |lista_declaracoes declaracao|declaracao|
