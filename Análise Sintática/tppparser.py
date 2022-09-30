@@ -2,6 +2,8 @@ from sys import argv, exit
 
 import logging
 
+root = None
+
 logging.basicConfig(
      level = logging.DEBUG,
      filename = "log-parser.txt",
