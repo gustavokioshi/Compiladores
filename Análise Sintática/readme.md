@@ -51,6 +51,9 @@ Na figura abaixo utilizou o token tipo para demostrar como ele realizava a chama
 
 <img src="tipo.png" style="height: 100px; width:200px;"/>
 
+Na figura abaixo utilizou o token definição de variaveis para demostrar como ele realizava a chama de outros tokens na tabela de tokens, diagrama de definição de variavel. Sendo possivel selecionar um desses tokens ID, ABRE_COLCHETE, expressao, FECHA_COLCHETE.
+
+<img src="defini_variavel.png" style="height: 100px; width:600px;"/>
 
 Na figura abaixo utilizou o token acao para demostrar como ele realizava a chama de outros tokens na tabela de tokens, diagrama de definição de corpo. Sendo possivel selecionar um desses tokens expressao, declaracao_variaveis, se, repita, leia, escreva, retorna, erro.
 
