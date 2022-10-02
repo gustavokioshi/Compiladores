@@ -60,10 +60,11 @@ Na figura abaixo utilizou o token acao para demostrar como ele realizava a chama
 <img src="acao.png" style="height: 300px; width:200px;"/>
 
 ### 4 Formato da Analise Sintática
+
 Para gerar a arvore sintatica é necessario ter as seguintes bibliotecas do graphviz, para gerar o png e a arvore no terminal.
 Na figura abaixo demostra a arvore gerada pelo bublesort.
 
-<img src="acao.png" style="height: 300px; width:200px;"/>
+<img src="bubble_sort.tpp.unique.ast.png"/>
 
 ### 5 Implementação
 ### 6 Resultados
