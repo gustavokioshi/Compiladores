@@ -87,6 +87,40 @@ def p_indice_error(p):
     parser.errok()
     p[0] = father
 ```
+
+A figura abaixo mostra se o token indice ocorre normalmente no codigo.
+
+```
+def p_indice(p):
+    """indice : indice ABRE_COLCHETE expressao FECHA_COLCHETE
+                | ABRE_COLCHETE expressao FECHA_COLCHETE
+    """
+    pai = MyNode(name='indice', type='INDICE')
+    p[0] = pai
+    if len(p) == 5:
+        p[1].parent = pai   # indice
+
+        filho2 = MyNode(name='abre_colchete', type='ABRE_COLCHETE', parent=pai)
+        filho_sym2 = MyNode(name=p[2], type='SIMBOLO', parent=filho2)
+        p[2] = filho2
+
+        p[3].parent = pai  # expressao
+
+        filho4 = MyNode(name='fecha_colchete', type='FECHA_COLCHETE', parent=pai)
+        filho_sym4 = MyNode(name=p[4], type='SIMBOLO', parent=filho4)
+        p[4] = filho4
+    else:
+        filho1 = MyNode(name='abre_colchete', type='ABRE_COLCHETE', parent=pai)
+        filho_sym1 = MyNode(name=p[1], type='SIMBOLO', parent=filho1)
+        p[1] = filho1
+
+        p[2].parent = pai  # expressao
+
+        filho3 = MyNode(name='fecha_colchete', type='FECHA_COLCHETE', parent=pai)
+        filho_sym3 = MyNode(name=p[3], type='SIMBOLO', parent=filho3)
+        p[3] = filho3
+```
+
 ### 5 Detalhes da implementação
 Durante a execução do tppparse.py ele recebe um codigo que permite identificar a qual token vai ser endereçado o determinados conjuntos de caracteres. O input necessia de um codigo .tpp para utilizar o ttpparse.py sendo retornado uma arvore com todas as palavras nos nós folhas 
 
