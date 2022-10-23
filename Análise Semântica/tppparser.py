@@ -2,7 +2,6 @@ from sys import argv, exit
 
 import logging
 
-root = None
 
 logging.basicConfig(
      level = logging.DEBUG,
@@ -833,6 +832,7 @@ def p_error(p):
 
 
 def main():
+    root = None
     # argv[1] = 'teste.tpp'
     aux = argv[1].split('.')
     if aux[-1] != 'tpp':
