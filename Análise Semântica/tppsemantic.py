@@ -220,11 +220,11 @@ def procura_dados_funcao(declaracao_funcao, tipo, nome_funcao, parametros, retor
             tipo_retorno = 'vazio'
             return tipo, nome_funcao, parametros, retorno_tipo_valor, tipo_retorno, linha_retorno
 
-        tipo, nome_funcao, parametros, retorno_tipo_valor, tipo_retorno, linha_retorno = encontra_dados_funcao(filho, tipo, nome_funcao, parametros, retorno_tipo_valor, tipo_retorno, linha_retorno)
+        tipo, nome_funcao, parametros, retorno_tipo_valor, tipo_retorno, linha_retorno = procura_dados_funcao(filho, tipo, nome_funcao, parametros, retorno_tipo_valor, tipo_retorno, linha_retorno)
 
     return tipo, nome_funcao, parametros, retorno_tipo_valor, tipo_retorno, linha_retorno
 
-def encontra_parametro_funcao(no, parametros):
+def procura_parametro_funcao(no, parametros):
     parametros = parametros
     parametro = {}
     for n in no.children:
@@ -286,7 +286,7 @@ def monta_tabela_simbolos(tree, tabela_simbolos):
             # Não se esquecer de verificar também os parâmetros da função
             linha_declaracao = filho.label.split(':')
             linha_declaracao = linha_declaracao[1]
-            tipo, nome_funcao, _, retorno, tipo_retorno, linha_retorno = encontra_dados_funcao(filho, '', '', '', '', '', '')
+            tipo, nome_funcao, _, retorno, tipo_retorno, linha_retorno = procura_dados_funcao(filho, '', '', '', '', '', '')
             if tipo == '':
                 tipo = 'vazio'
 
