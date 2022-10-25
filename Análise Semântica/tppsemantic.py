@@ -5,7 +5,6 @@ import sys
 from sys import argv
 from anytree.exporter import UniqueDotExporter
 
-
 global escopo
 global variavel_nao_declarada 
 global avisos
@@ -16,7 +15,7 @@ avisos = []
 
 pd.set_option('display.max_columns', None)
 
-def encontra_tipo_nome_parametro(parametro, tipo, nome):
+def procura_tipo_nome_parametro(parametro, tipo, nome):
     tipo = tipo
     nome = nome
     
@@ -34,7 +33,7 @@ def encontra_tipo_nome_parametro(parametro, tipo, nome):
             nome = param.children[0].label
             return tipo, nome
         
-        tipo, nome = encontra_tipo_nome_parametro(param, tipo, nome)
+        tipo, nome = procura_tipo_nome_parametro(param, tipo, nome)
     return tipo, nome
 
 def atribuicao_expressao(expressao, valores):
@@ -67,7 +66,7 @@ def atribuicao_expressao(expressao, valores):
     
     return valores
 
-def encontra_expressao_retorno(retorna, lista_retorno):
+def procura_expressao_retorno(retorna, lista_retorno):
     lista_retorno = lista_retorno
     retorno_dict = {}
     tipo_retorno = ''
@@ -94,24 +93,24 @@ def encontra_expressao_retorno(retorna, lista_retorno):
             lista_retorno.append(retorno_dict)
             return lista_retorno
 
-        lista_retorno = encontra_expressao_retorno(ret, lista_retorno)
+        lista_retorno = procura_expressao_retorno(ret, lista_retorno)
     
     return lista_retorno
 
-def encontra_valores_retorno(retorna, retorno):
+def procura_valores_retorno(retorna, retorno):
     retorno = retorno
 
     for ret in retorna.children:
         expressoes = ['expressao_aditiva', 'expressao_multiplicativa', ]
         if (ret.label in expressoes):
-            retorno = encontra_expressao_retorno(ret, retorno)
+            retorno = procura_expressao_retorno(ret, retorno)
             return retorno
         
-        encontra_valores_retorno(ret, retorno)
+        procura_valores_retorno(ret, retorno)
 
     return retorno
 
-def encontra_indice_retorno(expressao):
+def procura_indice_retorno(expressao):
     indice = ''
     tipo_retorno = ''
 
@@ -132,11 +131,11 @@ def encontra_indice_retorno(expressao):
             tipo_retorno = 'parametro'
             return tipo_retorno, indice
 
-        tipo_retorno,indice = encontra_indice_retorno(filhos)
+        tipo_retorno,indice = procura_indice_retorno(filhos)
     
     return tipo_retorno,indice
 
-def encontra_atribuicao_valor(expressao, valores):
+def procura_atribuicao_valor(expressao, valores):
     indice = ''
     tipo_retorno = ''
     valores = valores
@@ -162,7 +161,7 @@ def encontra_atribuicao_valor(expressao, valores):
             v[indice] = tipo_retorno
             valores.append(v)
 
-        tipo_retorno,indice = encontra_indice_retorno(filhos)
+        tipo_retorno,indice = procura_indice_retorno(filhos)
     
     return tipo_retorno, valores
 
@@ -177,20 +176,20 @@ def verifica_dimensoes(tree, dimensao, indice_1, indice_2):
             # Se for, quer dizer que tem mais de uma dimensão
             if (filho.children[0].label == 'indice'):
                 dimensao = 2
-                _, indice_1 = encontra_indice_retorno(filho.children[0].children[1])
-                _, indice_2 = encontra_indice_retorno(filho.children[2])
+                _, indice_1 = procura_indice_retorno(filho.children[0].children[1])
+                _, indice_2 = procura_indice_retorno(filho.children[2])
                 return dimensao, indice_1, indice_2
             
             else:
                 dimensao = 1
-                _, indice_1 = encontra_indice_retorno(filho.children[1])
+                _, indice_1 = procura_indice_retorno(filho.children[1])
                 indice_2 = 0
                 return dimensao, indice_1, indice_2
 
         dimensao, indice_1, indice_2 = verifica_dimensoes(filho, dimensao, indice_1, indice_2)
     return dimensao, indice_1, indice_2
 
-def encontra_dados_funcao(declaracao_funcao, tipo, nome_funcao, parametros, retorno_tipo_valor, tipo_retorno, linha_retorno):
+def procura_dados_funcao(declaracao_funcao, tipo, nome_funcao, parametros, retorno_tipo_valor, tipo_retorno, linha_retorno):
     tipo = tipo 
     nome_funcao = nome_funcao 
     parametros = parametros
@@ -213,7 +212,7 @@ def encontra_dados_funcao(declaracao_funcao, tipo, nome_funcao, parametros, reto
             escopo = nome_funcao
         
         elif ('retorna' in filho.label):
-            retorno_tipo_valor = encontra_valores_retorno(filho, [])
+            retorno_tipo_valor = procura_valores_retorno(filho, [])
             linha_retorno = filho.label.split(':')
             linha_retorno = linha_retorno[1]
             token = filho.children[0].label
@@ -230,15 +229,15 @@ def encontra_parametro_funcao(no, parametros):
     parametro = {}
     for n in no.children:
         if (no.label == 'parametro'):
-            tipo, nome = encontra_tipo_nome_parametro(no, '', '')
+            tipo, nome = procura_tipo_nome_parametro(no, '', '')
             parametro[nome] = tipo
             parametros.append(parametro)
             return parametros
-        encontra_parametro_funcao(n, parametros)
+        procura_parametro_funcao(n, parametros)
 
     return parametros
 
-def encontra_parametros(no_parametro, parametros):
+def procura_parametros(no_parametro, parametros):
     no_parametro = no_parametro
     parametros = parametros
     parametro = {}
@@ -246,12 +245,12 @@ def encontra_parametros(no_parametro, parametros):
     nome = ''
     for no in no_parametro.children:
         if (no.label == 'expressao'):
-            tipo, nome = encontra_indice_retorno(no)
+            tipo, nome = procura_indice_retorno(no)
             parametro[nome] = tipo
             parametros.append(parametro)
             return parametros
 
-        encontra_parametros(no, parametros)
+        procura_parametros(no, parametros)
     return parametros
 
 def monta_tabela_simbolos(tree, tabela_simbolos):
@@ -283,7 +282,7 @@ def monta_tabela_simbolos(tree, tabela_simbolos):
             retorno = []
             tipos = []
             # Encontrando os parametros
-            parametros = encontra_parametro_funcao(filho, parametros)
+            parametros = procura_parametro_funcao(filho, parametros)
             # Não se esquecer de verificar também os parâmetros da função
             linha_declaracao = filho.label.split(':')
             linha_declaracao = linha_declaracao[1]
@@ -380,7 +379,7 @@ def monta_tabela_simbolos(tree, tabela_simbolos):
             token = ''
             init = ''
             nome_funcao = filho.children[0].children[0].label
-            parametros = encontra_parametros(filho, parametros)
+            parametros = procura_parametros(filho, parametros)
             linha_declaracao = filho.label.split(':')
             linha_declaracao = linha_declaracao[1]
             # Procuro primeiramente se existe uma declaração dessa função
@@ -921,7 +920,7 @@ def main():
 
     # Gera imagem da árvore podada
     UniqueDotExporter(tree).to_picture(f"{sys.argv[1]}.prunned.unique.ast.png")
-    print(f"Grafo da Árvore Sintática Abstrata foi gerada. \nArquivo de Saída: {sys.argv[1]}.prunned.unique.ast.png")
+    print(f"Árvore Sintática Abstrata foi gerada. \nArquivo de Saída: {sys.argv[1]}.prunned.unique.ast.png")
 
 
 if __name__ == "__main__":
