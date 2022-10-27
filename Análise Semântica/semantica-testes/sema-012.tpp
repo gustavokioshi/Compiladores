@@ -11,7 +11,7 @@ inteiro func()
 fim
 
 inteiro principal()
-	b := 18
+	b := 18.7
 	a := b
 
 	a := func()
