@@ -1,21 +1,67 @@
 import tppparser
 import sys
-from tabulate import tabulate
 from prettytable import PrettyTable
 from sys import argv
 from anytree import RenderTree, AsciiStyle
 from anytree.exporter import UniqueDotExporter
 
-# def monta_tabela_simbolos(tree)
+def find_token(tree):
+    for filho in tree.children:
+        # print("log1:"+filho.label)
+        if "declaracao" == filho.label:
+            flag = 0
+            linha =''
+            print("linha:", end="")
+            for i in filho.children[0].label:
+                if(i==":"):
+                    flag = 1
+                elif(flag == 1):
+                    linha =linha+i
+                    print(i, end="")
+            print()
+            if "cabecalho" == filho.children[0].children[1].label:
+                print("lexema:"+ filho.children[0].children[1].children[0].children[0].label)
+                lexema = filho.children[0].children[1].children[0].children[0].label
+                print("token:"+ filho.children[0].children[1].children[0].label)
+                token = filho.children[0].children[1].children[0].label
+            else:
+                print("lexema:"+ filho.children[0].children[2].children[0].children[0].children[0].label)
+                lexema = filho.children[0].children[2].children[0].children[0].children[0].label
+                print("token:"+ filho.children[0].children[2].children[0].children[0].label)
+                token = filho.children[0].children[2].children[0].children[0].label
+            print("tipo:"+ filho.children[0].children[0].children[0].children[0].label)
+            tipo = filho.children[0].children[0].children[0].children[0].label
+            Table.add_row([token,lexema,tipo,"dim","tam_dim1","tam_dim2","global","N",linha])
+        if ("indice" == filho.label):
+            print("dim:1")
+            dim = 1
+            print("tam_dim1:"+ filho.children[1].children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0].label)
+            tam_dim1 = filho.children[1].children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0].label
+        
+        find_token(filho)
+# def find_lexema(tree)
+# def find_tipo(tree)
+# def find_dim(tree)
+# def find_tam_din1(tree)
+# def find_tam_dim2(tree)
+# def find_escopo(tree)
+# def find_init(tree)
+# def find_linha(tree)
+def monta_tabela_simbolos(tree):
+    print(find_token(tree))
+
+
+
 
 def main():
     tree = tppparser.main()
     global Table
-    Table = PrettyTable( ['Token', 'Lexema', 'Tipo', 'dim', 'tam_dim1', 'tam_dim2', 'escopo', 'init', 'linha', 'funcao', 'parametros', 'valor'])
+    Table = PrettyTable( ['Token', 'Lexema', 'Tipo', 'dim', 'tam_dim1', 'tam_dim2', 'escopo', 'init', 'linha'])
     print(RenderTree(tree, style=AsciiStyle()).by_attr())
-    Table.add_row(['Token', 'Lexema', 'Tipo', 'dim', 'tam_dim1', 'tam_dim2', 'escopo', 'init', 'linha', 'funcao', 'parametros', 'valor'])
+    # findall(tree, filter_=lambda node: node.name in ("a"))
+    
+    monta_tabela_simbolos(tree)
     print(Table)
-    # monta_tabela_simbolos(tree)
     # verifica_regras_semanticas(Table)
 
     # Nós que tem o valor de linhas nos nomes
@@ -35,8 +81,7 @@ def main():
                     'operador_multiplicacao', 'vezes','id', 'declaracao_variaveis', 'atribuicao', 'operador_relacional', 'MAIOR']
 
     # Verificar retorno (nenhum filho)
-    poda_arvore(tree)
-    print()
+    # print()
 
     # Gera imagem da árvore podada
     UniqueDotExporter(tree).to_picture(f"{sys.argv[1]}.prunned.unique.ast.png")

@@ -940,7 +940,7 @@ def main():
         # DotExporter(root).to_picture(argv[1] + ".ast.png")
         UniqueDotExporter(root).to_picture(argv[1] + ".unique.ast.png")
         DotExporter(root).to_dotfile(argv[1] + ".ast.dot")
-        UniqueDotExporter(root).to_dotfile(argv[1] + ".unique.ast.dot")
+        # UniqueDotExporter(root).to_dotfile(argv[1] + ".unique.ast.dot")
         # print(RenderTree(root, style=AsciiStyle()).by_attr())
         # print("Gráfico foi gerado.\nArquivo de saída: " + argv[1] + ".ast.png")
         # print()
