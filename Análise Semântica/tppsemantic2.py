@@ -4,7 +4,7 @@ from prettytable import PrettyTable
 from sys import argv
 from anytree import RenderTree, AsciiStyle
 from anytree.exporter import UniqueDotExporter
-
+flag = 0
 # def find_token(tree):
 #     for filho in tree.children:
 #         # print("log1:"+filho.label)
@@ -40,42 +40,60 @@ from anytree.exporter import UniqueDotExporter
         
 #         find_token(filho)
 def find_token(tree):
-    token =""
+    global flag
+    token = None
     for filho in tree.children:
-        print("log-ID:" + filho.label)
-        if "ID" == filho.label:
-            print("log-ID")
+        if flag == 1:
+            break
+        elif "ID" == filho.label:
+            flag =1
             return filho.label
-        token = find_token(filho)
+        else:
+            token = find_token(filho)
     return token
 
 def find_lexema(tree):
-    lexema=''
+    global flag
+    lexema =''
     for filho in tree.children:
-        if "ID" == filho.label:
+        if flag == 1:
+            break
+        elif "ID" == filho.label:
+            flag = 1
             return filho.children[0].label
-        lexema = find_lexema(filho)
+        else:
+            lexema = find_lexema(filho)
     return lexema
+
 def find_tipo(tree):
+    global flag 
     for filho in tree.children:
         if "tipo" == filho.label:
             return filho.children[0].children[0].label
-        return find_tipo(filho)
+        else:
+            return find_tipo(filho)
+dim = 0
 def find_dim(tree,count):
-    dim = 0
+    global dim
     for filho in tree.children:
-        if "indice" == filho.label:
+        if "corpo" == filho.label:
+            break
+        elif "indice" == filho.label:
             count = count + 1
             return count
         dim = find_dim(filho,count)
     return dim
+tam_dim1 = 0
 def find_tam_dim1(tree):
-    tam_dim1 = 0
+    global tam_dim1
     for filho in tree.children:
-        if "indice" == filho.label:
+        if "corpo" == filho.label:
+            break
+        elif "indice" == filho.label:
             return filho.children[1].children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0].label
         tam_dim1 = find_tam_dim1(filho)
     return tam_dim1
+
 # def find_tam_dim2(tree)
 # def find_escopo(tree)
 # def find_init(tree)
@@ -90,11 +108,16 @@ def find_linha(tree):
     return linha
 
 def monta_tabela_simbolos(tree):
+    global flag
+    global dim
+    global tam_dim1
     for filho in tree.children:
         if "declaracao" == filho.label:
+            flag = 0
             token = find_token(filho)
             init = "N"
             escopo = "global"
+            flag = 0
             lexema = find_lexema(filho)
             tipo = find_tipo(filho)
             dim = find_dim(filho,0)
@@ -102,24 +125,41 @@ def monta_tabela_simbolos(tree):
             tam_dim2 = "0"
             linha = find_linha(filho)
             Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha])
-        if "ATRIBUICAO" == filho.label:
-            token = find_token(filho.parent.parent)
+        elif "acao" == filho.label:
+            flag = 0
+            token = find_token(filho)
             init = "S"
-            escopo = filho.parent.parent.parent.parent.parent.children[0].children[0].label
-            lexema = find_lexema(filho.parent)
-            tipo = find_tipo(filho.parent.parent)
-            dim = find_dim(filho.parent.parent,0)
-            tam_dim1 = find_tam_dim1(filho.parent.parent)
+            escopo = filho.parent.parent.children[0].children[0].label
+            flag = 0
+            lexema = find_lexema(filho)
+            tipo = find_tipo(filho)
+            dim = find_dim(filho,0)
+            tam_dim1 = find_tam_dim1(filho)
             tam_dim2 = "0"
-            linha = find_linha(filho.parent.parent)
+            linha = find_linha(filho.children[0])
             Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha])
+        elif "parametro" == filho.label:
+            flag = 0
+            token = "ID"
+            init = "S"
+            escopo = "fix"
+            flag = 0
+            lexema = filho.children[2].children[0].label
+            tipo = filho.children[0].children[0].children[0].label
+            dim = find_dim(filho,0)
+            tam_dim1 = find_tam_dim1(filho)
+            tam_dim2 = "0"
+            linha = 0
+            Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha])
+        dim = 0
+        tam_dim1 = 0
         monta_tabela_simbolos(filho)
 
 def main():
     tree = tppparser.main()
     global Table
     Table = PrettyTable( ['Token', 'Lexema', 'Tipo', 'dim', 'tam_dim1', 'tam_dim2', 'escopo', 'init', 'linha'])
-    print(RenderTree(tree, style=AsciiStyle()).by_attr())
+    # print(RenderTree(tree, style=AsciiStyle()).by_attr())
     # findall(tree, filter_=lambda node: node.name in ("a"))
     
     monta_tabela_simbolos(tree)
