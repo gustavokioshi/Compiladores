@@ -324,11 +324,13 @@ def p_lista_parametros(p):
 
 
 def p_parametro(p):
+
     """parametro : tipo DOIS_PONTOS ID
                 | parametro ABRE_COLCHETE FECHA_COLCHETE
     """
-
-    pai = MyNode(name='parametro', type='PARAMETRO')
+    line = p.lineno(2)
+    name = 'parametro:' + str(line)
+    pai = MyNode(name=name, type='PARAMETRO')
     p[0] = pai
     p[1].parent = pai
 
