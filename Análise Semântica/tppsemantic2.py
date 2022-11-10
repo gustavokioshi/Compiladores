@@ -7,8 +7,11 @@ from anytree.exporter import UniqueDotExporter
 
 global flag
 flag = 0
+tam_dim1 = 0
+dim = 0
 global parametro
 parametro = ''
+
 def find_token(tree):
     global flag
     token = None
@@ -45,7 +48,7 @@ def find_tipo(tree):
             return filho.children[0].children[0].label
         else:
             return find_tipo(filho)
-dim = 0
+
 def find_dim(tree,count):
     global dim
     for filho in tree.children:
@@ -56,7 +59,7 @@ def find_dim(tree,count):
             return count
         dim = find_dim(filho,count)
     return dim
-tam_dim1 = 0
+
 def find_tam_dim1(tree):
     global tam_dim1
     for filho in tree.children:
@@ -68,6 +71,7 @@ def find_tam_dim1(tree):
     return tam_dim1
 
 # def find_tam_dim2(tree)
+
 def find_escopo(tree):
     if tree.parent == None:
         return "global"
@@ -115,7 +119,7 @@ def find_parametros(tree):
             return parametro
         find_parametros(filho)
     return parametro
-            
+
 def find_valor(tree):
     # if "atribuicao" in tree.label:
         # for 
@@ -179,6 +183,19 @@ def monta_tabela_simbolos(tree):
         parametro = ""
         monta_tabela_simbolos(filho)
 
+def declaracao_funcao_principal():
+    flag = 0
+    global Table
+    for linha in Table:
+        if linha[2] == "principal":
+            flag = 1
+    if flag == 1:
+        print("Erro: Função principal não declarada")
+
+
+def verifica_regras_semanticas():
+    declaracao_funcao_principal()
+
 def main():
     tree = tppparser.main()
     global Table
@@ -188,7 +205,7 @@ def main():
     
     monta_tabela_simbolos(tree)
     print(Table)
-    # verifica_regras_semanticas(Table)
+    verifica_regras_semanticas()
 
     # Nós que tem o valor de linhas nos nomes
     verificar_nos = ['retorna', 'corpo', 'leia', 'escreva', 'se', 'repita', 'até']
