@@ -192,9 +192,13 @@ def declaracao_funcao_principal():
     if flag == 1:
         print("Erro: Função principal não declarada")
 
+def funcao_nao_inicializada():
+    for linha in Table:
+        if 
 
 def verifica_regras_semanticas():
     declaracao_funcao_principal()
+    funcao_nao_inicializada()
 
 def main():
     tree = tppparser.main()
