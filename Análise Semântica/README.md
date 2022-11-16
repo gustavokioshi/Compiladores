@@ -1,16 +1,13 @@
-# Projeto de Implementação de um Compilador para a Linguagem TPP: Análise Léxica (Trabalho – 1ª parte)
+# Projeto de Implementação de um Compilador para a Linguagem TPP: Análise Semantica (Trabalho – 3ª parte)
 #### Gustavo Kioshi Asato
 #### Ciencia da Computação – Universidade Tecnológica Federal do Paraná (UTFPR)
-## 1 Análisador Léxico
-Nessa atividade desenvolvida durante a disciplina de Compiladores tem em foco desenvolver um analisador léxico que funcina como um sistema de varedura no codigo a ser compilado, separando os tokens. Os tokens são definidos no compilador sendo palavras reservadas ou símbolos. Cada token pode receber os proximos caracteres de acordo com a sua implementação de forma com que cada token possa ter uma entrada necessaria para retornar para oque foi designada.
-### 2 Linguagem TPP
-A linguagem TPP possui os seguintes tipos suportados interio e flutuante podendo ser armazenados em arrays unidimensional ou bidimensional. O tipo de aquivo para ser reconhecido como .tpp no final do arquivo.
-### 2.1 Tokens
-Os tokens são pré-definidos na criação do compilador. Sendo chamada toda vez que aparece no codigo a ser compilado, cada token possui uma ação especifica podendo tomar diversas descisões com determinados parametros que foram submetidos.
-### 2.2 Tabela de tokens
+## 1 Análise Semantica
+Nessa atividade desenvolvida durante a disciplina de Compiladores tem em foco desenvolver um analisador semantico que funcina como um sistema de varedura no codigo a ser compilado, separando os tokens. Os tokens são definidos no compilador sendo palavras reservadas ou símbolos dispinilizados em formato de arvore pelo analise sintatica. Cada token pode receber os proximos caracteres de acordo com a sua implementação de forma com que cada token possa ter uma entrada necessaria para retornar para oque foi designada.
 
-##### Operadores
-Os tokens de operadores é responsavel pela a mudança e comparação de identificadores. 
+### 2 Tabela de Simbolos
+Durante a analise Semantica ha dois objetivos que devem ser completados, sendo eles a construcao da tabela de simbolos, e a identificacao de erros e avisos, assim como os erros e avisos esperados no conjunto de testes especificamente para analise semantica, e por fim, podar a arvore Sintatica, o que resultara em uma arvore sintatica abstrata. A criacao da tabela de simbolos neste caso for felta durante a propria analise Semantica, mais especificamente, antes de verificar as regras semanticas, ja que ela sera utilizada para realizar este passo. A tabela gerada ao fim e semelhante a tabela abaixo.
+
+
 |token          |simbolo|
 |---------------|------|
 | MAIS          | +    |
@@ -27,61 +24,26 @@ Os tokens de operadores é responsavel pela a mudança e comparação de identif
 | IGUAL         | =    |
 | NEGACAO       | !    |
 
-##### simbolos
-Na gramatica utilizada esses simbolos são utilizados para dar ordem a identificadores e preferencia de que opreração realizara primeiro.
-|token          |simbolo|
-|---------------|------|
-| ABRE_PARENTESE| (    |
-| FECHA_PARENTESE| )    |
-| ABRE_COLCHETE | [    |
-| FECHA_COLCHETE|  ]   |
-| VIRGULA      | ,   |
-| DOIS_PONTOS    | :  |
-| ATRIBUICAO     | :=  |
+E possivel perceber que a Tabela de Simbolos contem de acordo com a necessidade de elementos nas colunas, e agora veremos o que cada uma delas significa. A coluna 'Token' representa o token da variavel ou funcao que faz parte da tabela de simbolos, a coluna 'Lexema' contem o nome das variaveis declaradas ou utilizadas, assim como o nome das funcoes declaradas ou chamada, a coluna 'Tipo' contem o tipo das variaveis ou funcoes declaradas, a colunas 'dim' contera '0' caso seja , e caso ela contenha mais de uma dimensao, os valores dessas dimensoes serao armazenadas nas colunas'tam-diml' que representa o tamanho da primeira dimensao e 'tam-dim2', a qual representa o tamanho da segunda dimensao. Ja a coluna 'init' representa se uma funcao ou variavel foi declarada ou nao, dizendo na coluna 'linha' onde ela foi encontrada. Por fim podemos observar as colunas adicionada principalmente para armazenar alguns dados das funcoes, sendo elas 'funcao' que indica se o lexema identificado e uma funcao ou nao, e caso seja, na coluna e armazena os parametros passados. Para encerrar temos a coluna valor , que como o proprio nome diz, guarda os valores e tipos das atribuicoes feitas.
 
-##### palavras reservadas
-Alguns tokens da Linguagem T++ são identificados como palavras reservadas que por sua vez não são possiveis de serem utilizados como identificadores como ela é responsavel pela gramatica da linguagem sendo representada na figura abaixo.
-|token          |simbolo|
-|---------------|------|
-| SE|se   |
-| ENTAO| então   |
-| SENAO | senão   |
-| FIM| fim  |
-| REPITA      | repita  |
-| FLUTUANTE    | flutuante |
-| RETORNA     | retorna |
-| ATE| até  |
-| LEIA      | leia  |
-| ESCREVA    | escreva  |
-| INTEIRO     |inteiro |
 
-## 3 Linguagens de programação para a implementação
-### 3.1 Python
-O Python é uma linguagem de programação de alto nível utilizada em diferentes tipos de aplicações, em Machine Learning, no desenvolvimento de jogos. Sendo necessario para utilizar para poder compilar os codigos.
-### 3.2 PLY
-O PLY é uma biblioteca para python que permite desenvolver um compilador sendo necessario durante todo o desenvolvimento do projeto 
-### 3.3 Autômato
-Durante todo o codigo a ser compilado por definição o processo de identificação dos tokens utiliza autômaros finitos e expressões regulares. Que por sua vez tem como objetivo identificar todas as cadeias de caracteres.
-Na figura abaixo demonstra um autômato da palavra "retorna"
-![alt text](teste.drawio.png)
-### 3.4 Fatorial
-Nesse exemplo testara o codigo fatorial.tpp que realiza o fatorial do numero 3 demostrado na figura abaixo
+## 3 Regras Semânticas
+Para que seja possivel criar a Arvore Sintatica Abstrata, e necessario tem um maior conhecimento sobre as regras semanticas aplicada a linguagem. Neste caso a regra semantica foi oferecida pelo professor no documento de especificacao do desenvolvimento desta analise, podendo entao ser observada a seguir.
 
-![alt text](fatoral.jpg)
-
-### 3.5 Varredura
-A varedura serve como como um corretor checando o codigo vendo se possui algum erro da gramática no caso o analizador lexico serve para checar todos os tokens utilizados no codigo sendo um exemplo mostrado na figura abaixo do fatorial.tpp 
 
 ![alt text](fatorial1.png)
-## 4 Testes
-### 4.1 Execução do codigo
-Para testar codigo foi utilizado todos os testes dispinibilizados codigo de entrada da linguagem T++ comparando com a saida de cada arquivo corespondente.
+## 3.1 Funcoes e Procedimentos
+- Verificacao se existe uma funcao principal no codigo que serve como funcao de inicializacao
+- Verificar se o tipo retornado da funcao principal e o mesmo do tipo da funcao principal
+- Verificar se a quantidade de parametros de uma chamada de funcao e igual a quantidade de parametros formais de sua definicao
+- Verificar para todas as funcoes se o tipo do valor retornado e compativel com o tipo de retorno declarado
+- Verificar se as funcoes sao declaradas antes de ser chamadas
+- Uma funcao qualquer nao pode chamar a funcao principal
+- É possivel declarar uma funcao e nao utiliza la
+
 
 ![alt text](testes.png)
 ## 5 Referencias
-https://pt.slideshare.net/dabeaz/writing-parsers-and-compilers-with-ply
 
-https://www.dabeaz.com/ply/ply.html
-
-https://docs.python.org/3/
+https://anytree.readthedocs.io/en/latest/
 
