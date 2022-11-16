@@ -11,6 +11,17 @@ tam_dim1 = 0
 dim = 0
 global parametro
 parametro = ''
+global token_list
+red = ""
+class Token():
+    def __init__(self):
+        self.list = []
+        
+    def add(self,token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor, retorno):
+        self.list.append([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor, retorno])
+        return self.list
+
+token_list = Token()
 
 def find_token(tree):
     global flag
@@ -102,10 +113,17 @@ def find_linha(tree):
     return linha
 
 def find_funcao(tree):
+    red = "N"
+    if "chamada_funcao" in tree.label:
+        return "S"
     for filho in tree.children:
-        if "declaracao_funcao" in filho.label:
-            return filho.children[1].children[0].children[0].label
-
+        if "cabecalho" in filho.label:
+            return "S"
+        if "expressao" in filho.label:
+            return "N"
+        if red == "N":
+            red = find_funcao(filho)
+    return red
 def find_parametros(tree):
     global parametro
     for filho in tree.children:
@@ -119,16 +137,41 @@ def find_parametros(tree):
             return parametro
         find_parametros(filho)
     return parametro
+def allleaf(tree):
+    global red
+    for filho in tree.children:
+        if filho.label == "ID":
+            red = red + filho.children[0].label
+        allleaf(filho)
+    return red
 
 def find_valor(tree):
-    # if "atribuicao" in tree.label:
-        # for 
-    return "fix"
+    global red
+    for filho in tree.children:
+        if "expressao:" in filho.label:
+            red = red + allleaf(filho)
+    return parametro
+def find_retorno(tree):
+    red = "vazio"
+    for filho in tree.children:
+        if "retorna" in filho.label:
+            return "S"
+        if red == "vazio":
+            red = find_retorno(filho)
+    return red
+def find_ID(tree,escopo,linha):
+    global token_list
+    for filho in tree.children:
+        if filho.label == "ID":
+            Table.add_row([filho.label,filho.children[0].label,None,0,0,0,escopo,"N",linha,"N", None, None, "vazio"])
+            token_list.add(filho.label,filho.children[0].label,None,0,0,0,escopo,"N",linha,"N", None, None, "vazio")
+        find_ID(filho,escopo,linha)
 def monta_tabela_simbolos(tree):
     global flag
     global dim
     global tam_dim1
     global parametro
+    global token_list
     for filho in tree.children:
         if ("declaracao_funcao" in filho.label) or ("chamada_funcao" in filho.label):
             flag = 0
@@ -145,7 +188,9 @@ def monta_tabela_simbolos(tree):
             funcao =find_funcao(filho)
             parametros = find_parametros(filho)
             valor = find_valor(filho)
-            Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor])
+            retorno = find_retorno(filho)
+            Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor, retorno])
+            token_list.add(token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor, retorno)
         elif ("atribuicao" in filho.label) or ("declaracao_variaveis" in filho.label):
             flag = 0
             token = find_token(filho)
@@ -161,7 +206,17 @@ def monta_tabela_simbolos(tree):
             funcao =find_funcao(filho)
             parametros = None
             valor = find_valor(filho)
-            Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor])
+            retorno = find_retorno(filho)
+            Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor, retorno])
+            token_list.add(token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor, retorno)
+            if ("atribuicao" in filho.label):
+                for filhoi in filho.children:
+                    if filhoi.label == "expressao":
+                        find_ID(filhoi,escopo,linha)
+
+
+
+            
         elif "parametro:" in filho.label:
             flag = 0
             token = find_token(filho)
@@ -177,60 +232,160 @@ def monta_tabela_simbolos(tree):
             funcao =find_funcao(filho)
             parametros = None
             valor = find_valor(filho)
-            Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor])
+            retorno = find_retorno(filho)
+            Table.add_row([token,lexema,tipo,dim,tam_dim1,tam_dim2, escopo, init, linha,funcao, parametros, valor, retorno])
+            token_list.add(token,lexema,tipo,dim,tam_dim1,tam_dim2,escopo,init,linha,funcao, parametros, valor, retorno)
+        if ("retorna:" in filho.label):
+            escopo = find_escopo(filho)
+            linha = find_linha(filho)
+            for filhoi in filho.children:
+                if filhoi.label == "expressao":
+                    find_ID(filhoi,escopo,linha)
         dim = 0
         tam_dim1 = 0
         parametro = ""
         monta_tabela_simbolos(filho)
 
+
+
+
 def declaracao_funcao_principal():
     flag = 0
-    global Table
-    for linha in Table:
-        if linha[2] == "principal":
+    global token_list
+    for token in token_list.list:
+        if token[1] == "principal":
             flag = 1
-    if flag == 1:
+            if token[2] == None:
+                flag = 2
+                break
+    if flag == 0:
         print("Erro: Função principal não declarada")
+    if flag == 2:
+        print("Erro: Chamada para a função principal não permitida")
+
+def erro_de_array():
+    global token_list
+    for token in token_list.list:
+        if '0' != token[3]:
+            if '.' in str(token[4]):
+                if None == token[2]:
+                    print("Erro: índice de array '"+ token[1] +"' não inteiro")
+
 
 def funcao_nao_inicializada():
-    for linha in Table:
-        if 
+    global token_list
+    for token_a in token_list.list:
+        repete_token = 0
+        flag = 0
+        for token_b in token_list.list:
+            if token_b[1] != "principal":
+                if token_a[1] == token_b[1] :
+                    repete_token = repete_token + 1
+                    if (token_b[7] == "N") and (token_b[2] != None):
+                        flag = 1
+                    if (token_b[7] == "S") and (flag == 1):
+                        flag = 0
+                    if (token_b[2] != None) and (token_a[2] != None):
+                        temp = int(token_b[8]) - int(token_a[8])
+                        if temp <0:
+                            flag =2
+                            break
+                if token_b[1] == token_a[6] :
+                    flag = 0
+                if (token_a[8] == token_b[8]) and (token_a[7] == "N") and (token_b[7] == "S"):
+                    valida1 = "asd"
+                    valida2 = "ewq"
+                    for token_c in token_list.list:
+                        if token_c[1] == token_a[1]:
+                            valida1 = token_c[2]
+                        if token_c[1] == token_b[1]:
+                            valida2 = token_c[2]
+                    if (valida1 == valida2):
+                        flag = 3
+                        break
+
+                    
+        if flag == 1:
+            print("Aviso: Variável '"+ token_a[1] +"' declarada e não utilizada")
+        elif flag == 2:
+            print("Aviso: Variável '"+ token_a[1] +"' já declarada anteriormente")
+        elif repete_token == 1:
+            print("Aviso: Variável '"+ token_a[1] +"' não declarada")
+        elif flag == 3:
+            print("Aviso: Coerção implícita do valor de '"+ token_a[1] +"'")
+
+def retorna():
+    global token_list
+    for token in token_list.list:
+        if token[9] == "S":
+            if token[2] == None:
+                print("Erro: Chamada a função '"+token[1]+"' que não foi declarada")
+            elif token[12] == "vazio":
+                print("Erro: Função '"+ token[1]+"' deveria retornar '"+str(token[2])+"', mas retorna "+token[12])            
 
 def verifica_regras_semanticas():
     declaracao_funcao_principal()
+    erro_de_array()
     funcao_nao_inicializada()
+    retorna()
+
+def retira_no(no_remove):
+    global remover_nos
+    global verificar_nos
+    aux_tree = []
+    no_pai = no_remove.parent
+
+    if no_remove.label in remover_nos:
+        for filho in range(len(no_pai.children)):
+            if no_pai.children[filho].label ==  no_remove.label:
+                aux_tree += no_remove.children
+            else:
+                aux_tree.append(no_pai.children[filho])
+        no_pai.children = aux_tree
+
+    if (no_remove.label in verificar_nos):
+        for filho in range(len(no_pai.children)):
+            if no_pai.children[filho].label ==  no_remove.label:
+                aux_tree += no_remove.children
+            else:
+                aux_tree.append(no_pai.children[filho])
+        no_pai.children = aux_tree
+        
+def poda_arvore(tree):
+    for filho in tree.children:
+        poda_arvore(filho)
+    retira_no(tree)
 
 def main():
-    tree = tppparser.main()
+    global remover_nos
+    global verificar_nos
     global Table
-    Table = PrettyTable( ['Token', 'Lexema', 'Tipo', 'dim', 'tam_dim1', 'tam_dim2', 'escopo', 'init', 'linha','funcao', 'parametros', 'valor'])
-    # print(RenderTree(tree, style=AsciiStyle()).by_attr())
-    # findall(tree, filter_=lambda node: node.name in ("a"))
+    tree = tppparser.main()
+    Table = PrettyTable( ['Token', 'Lexema', 'Tipo', 'dim', 'tam_dim1', 'tam_dim2', 'escopo', 'init', 'linha','funcao', 'parametros', 'valor', 'retorno'])
     
     monta_tabela_simbolos(tree)
     print(Table)
     verifica_regras_semanticas()
 
-    # Nós que tem o valor de linhas nos nomes
-    verificar_nos = ['retorna', 'corpo', 'leia', 'escreva', 'se', 'repita', 'até']
+    # Nós que serao mantidos
+    verificar_nos = ['retorna', 'corpo', 'cabecalho', 'atribuicao', 'chamada_funcao', 'declaracao_variaveis']
 
-    # Nós que serão retirados na poda
-    remover_nos = ['ID', 'var', 'lista_variaveis', 'dois_pontos', 'tipo',
-                    'INTEIRO',  'NUM_INTEIRO','lista_declaracoes', 'declaracao', 'indice',
+    # Nós que serão removidos na poda
+    remover_nos = ['ID', 'var', 'dois_pontos', 'tipo', 'leia', 'escreva','se', 'repita', 'até',
+                    'INTEIRO',  'NUM_INTEIRO', 'declaracao', 'indice', 'lista_declaracoes',
                     'numero', 'fator','abre_colchete', 'fecha_colchete', 'menos', 'menor_igual',
                     'maior_igual','expressao', 'expressao_logica',  'ABRE_PARENTESE', 'FECHA_PARENTESE', 
-                    'MAIS', 'chamada_funcao', 'MENOS','expressao_simples', 'expressao_aditiva', 'expressao_multiplicativa',
+                    'MAIS', 'MENOS','expressao_simples', 'expressao_multiplicativa', 'vazio','fim',
                     'expressao_unaria', 'inicializacao_variaveis', 'ATRIBUICAO','NUM_NOTACAO_CIENTIFICA', 'LEIA', 
-                    'abre_parentese', 'fecha_parentese', 'atribuicao', 'fator', 'cabecalho', 'FIM','operador_soma',
-                    'mais', 'chamada_funcao', 'lista_argumentos', 'VIRGULA','virgula', 'lista_parametros', 'vazio',
-                    '(', ')', ':', ',', 'FLUTUANTE', 'NUM_PONTO_FLUTUANTE', 'RETORNA', 'ESCREVA', 'SE', 'ENTAO', 'SENAO',
-                    'maior','menor', 'REPITA', 'igual', 'menos', 'menor_igual', 'maior_igual', 'operador_logico',
-                    'operador_multiplicacao', 'vezes','id', 'declaracao_variaveis', 'atribuicao', 'operador_relacional', 'MAIOR']
+                    'abre_parentese', 'fecha_parentese', 'fator', 'FIM','operador_soma', 'expressao_aditiva',
+                    'mais', 'lista_argumentos', 'VIRGULA','virgula', 'lista_parametros', ',',
+                     'FLUTUANTE', 'NUM_PONTO_FLUTUANTE', 'RETORNA', 'ESCREVA', 'SE', 'ENTAO', 'SENAO',
+                    'maior','menor', 'REPITA', 'operador_logico', 'lista_variaveis','acao',
+                    'operador_multiplicacao', 'vezes','id', 'operador_relacional', 'MAIOR']
 
-    # Verificar retorno (nenhum filho)
-    # print()
+    poda_arvore(tree)
+    print()
 
-    # Gera imagem da árvore podada
     UniqueDotExporter(tree).to_picture(f"{sys.argv[1]}.prunned.unique.ast.png")
     print(f"Árvore Sintática Abstrata foi gerada. \nArquivo de Saída: {sys.argv[1]}.prunned.unique.ast.png")
 
