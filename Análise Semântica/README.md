@@ -60,7 +60,8 @@ Nessa parte realiza a poda da arvore que permite deixar as principais operaçõe
 
 ![image](semantica-testes/sema-005.tpp.prunned.unique.ast.png)
                     
-
+antes da poda
+![image](semantica-testes/sema-005.tpp.unique.ast.png)
 ## 5 Referencias
 
 https://anytree.readthedocs.io/en/latest/
