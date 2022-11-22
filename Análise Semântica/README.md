@@ -58,7 +58,7 @@ Para que seja possivel criar a Arvore Sintatica Abstrata, e necessario tem um ma
 ## 4 Poda arvore
 Nessa parte realiza a poda da arvore que permite deixar as principais operações que ocorre na arvore sendo as atribuicoes realizadas no codigo os nós são separados para aqueles que serão cortados e os que serão mantidos sendo os matidos 'retorna', 'corpo', 'cabecalho', 'atribuicao', 'chamada_funcao', 'declaracao_variaveis' e os que seão apagados 'ID', 'var', 'dois_pontos', 'tipo', 'leia', 'escreva','se', 'repita', 'até', 'INTEIRO',  'NUM_INTEIRO', 'declaracao', 'indice', 'lista_declaracoes', 'numero', 'fator','abre_colchete', 'fecha_colchete', 'menos', 'menor_igual', 'maior_igual','expressao', 'expressao_logica',  'ABRE_PARENTESE', 'FECHA_PARENTESE', 'MAIS', 'MENOS','expressao_simples', 'expressao_multiplicativa', 'vazio','fim', 'expressao_unaria', 'inicializacao_variaveis', 'ATRIBUICAO','NUM_NOTACAO_CIENTIFICA', 'LEIA', 'abre_parentese', 'fecha_parentese', 'fator', 'FIM','operador_soma', 'expressao_aditiva', 'mais', 'lista_argumentos', 'VIRGULA','virgula', 'lista_parametros', ',', 'FLUTUANTE', 'NUM_PONTO_FLUTUANTE', 'RETORNA', 'ESCREVA', 'SE', 'ENTAO', 'SENAO', 'maior','menor', 'REPITA', 'operador_logico', 'lista_variaveis','acao', 'operador_multiplicacao', 'vezes','id', 'operador_relacional', 'MAIOR', sendo esses os tokens utilizados no codigo.
 
-![image](/Compiladores/Análise Semântica/semantica-testes/sema-005.tpp.prunned.unique.ast.png)
+![image](/semantica-testes/sema-005.tpp.prunned.unique.ast.png)
                     
 
 ## 5 Referencias
