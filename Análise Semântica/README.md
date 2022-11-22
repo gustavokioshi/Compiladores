@@ -4,6 +4,20 @@
 ## 1 Análise Semantica
 Nessa atividade desenvolvida durante a disciplina de Compiladores tem em foco desenvolver um analisador semantico que funcina como um sistema de varedura no codigo a ser compilado, separando os tokens. Os tokens são definidos no compilador sendo palavras reservadas ou símbolos dispinilizados em formato de arvore pelo analise sintatica. Cada token pode receber os proximos caracteres de acordo com a sua implementação de forma com que cada token possa ter uma entrada necessaria para retornar para oque foi designada.
 O teste a ser analizado 'sema005.tpp'.
+~~~TPP
+{Erro: Chamada à função 'func' com número de parâmetros menor que o declarado}
+{Erro: Função principal deveria retornar inteiro, mas retorna vazio}
+
+inteiro func(inteiro: x, inteiro: y)
+	retorna(x + y)
+fim
+
+inteiro principal()
+	inteiro: a
+	a := func(10)
+fim
+~~~
+
 ### 2 Tabela de Simbolos
 Durante a analise Semantica ha dois objetivos que devem ser completados, sendo eles a construcao da tabela de simbolos, e a identificacao de erros e avisos, assim como os erros e avisos esperados no conjunto de testes especificamente para analise semantica, e por fim, podar a arvore Sintatica, o que resultara em uma arvore sintatica abstrata. A criacao da tabela de simbolos neste caso for felta durante a propria analise Semantica, mais especificamente, antes de verificar as regras semanticas, ja que ela sera utilizada para realizar este passo. A tabela gerada ao fim e semelhante a tabela abaixo.
 
@@ -43,6 +57,8 @@ Para que seja possivel criar a Arvore Sintatica Abstrata, e necessario tem um ma
 
 ## 4 Poda arvore
 Nessa parte realiza a poda da arvore que permite deixar as principais operações que ocorre na arvore sendo as atribuicoes realizadas no codigo os nós são separados para aqueles que serão cortados e os que serão mantidos sendo os matidos 'retorna', 'corpo', 'cabecalho', 'atribuicao', 'chamada_funcao', 'declaracao_variaveis' e os que seão apagados 'ID', 'var', 'dois_pontos', 'tipo', 'leia', 'escreva','se', 'repita', 'até', 'INTEIRO',  'NUM_INTEIRO', 'declaracao', 'indice', 'lista_declaracoes', 'numero', 'fator','abre_colchete', 'fecha_colchete', 'menos', 'menor_igual', 'maior_igual','expressao', 'expressao_logica',  'ABRE_PARENTESE', 'FECHA_PARENTESE', 'MAIS', 'MENOS','expressao_simples', 'expressao_multiplicativa', 'vazio','fim', 'expressao_unaria', 'inicializacao_variaveis', 'ATRIBUICAO','NUM_NOTACAO_CIENTIFICA', 'LEIA', 'abre_parentese', 'fecha_parentese', 'fator', 'FIM','operador_soma', 'expressao_aditiva', 'mais', 'lista_argumentos', 'VIRGULA','virgula', 'lista_parametros', ',', 'FLUTUANTE', 'NUM_PONTO_FLUTUANTE', 'RETORNA', 'ESCREVA', 'SE', 'ENTAO', 'SENAO', 'maior','menor', 'REPITA', 'operador_logico', 'lista_variaveis','acao', 'operador_multiplicacao', 'vezes','id', 'operador_relacional', 'MAIOR', sendo esses os tokens utilizados no codigo.
+
+![image](sema-005.tpp.prunned.unique.ast.png)
                     
 
 ## 5 Referencias
