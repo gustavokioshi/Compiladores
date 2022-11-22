@@ -28,9 +28,9 @@ Para que seja possivel criar a Arvore Sintatica Abstrata, e necessario tem um ma
 
 
 
-Aviso: Variável 'func' não declarada
-Erro: Função 'principal' deveria retornar 'inteiro', mas retorna vazio
-Erro: Chamada a função 'func' que não foi declarada
+- Aviso: Variável 'func' não declarada
+- Erro: Função 'principal' deveria retornar 'inteiro', mas retorna vazio
+- Erro: Chamada a função 'func' que não foi declarada
 
 ## 3.1 Funcoes e Procedimentos
 - Verificacao se existe uma funcao principal no codigo que serve como funcao de inicializacao
