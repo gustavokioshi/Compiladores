@@ -365,7 +365,7 @@ def main():
     
     monta_tabela_simbolos(tree)
     print(Table)
-    verifica_regras_semanticas()
+    # verifica_regras_semanticas()
 
     # Nós que serao mantidos
     verificar_nos = ['retorna', 'corpo', 'cabecalho', 'atribuicao', 'chamada_funcao', 'declaracao_variaveis']
@@ -381,14 +381,14 @@ def main():
                     'mais', 'lista_argumentos', 'VIRGULA','virgula', 'lista_parametros', ',',
                      'FLUTUANTE', 'NUM_PONTO_FLUTUANTE', 'RETORNA', 'ESCREVA', 'SE', 'ENTAO', 'SENAO',
                     'maior','menor', 'REPITA', 'operador_logico', 'lista_variaveis','acao',
-                    'operador_multiplicacao', 'vezes','id', 'operador_relacional', 'MAIOR']
+                    'operador_multiplicacao', 'vezes','id', 'operador_relacional', 'MAIOR',')','(',':',':=']
 
     poda_arvore(tree)
     print()
 
     UniqueDotExporter(tree).to_picture(f"{sys.argv[1]}.prunned.unique.ast.png")
     print(f"Árvore Sintática Abstrata foi gerada. \nArquivo de Saída: {sys.argv[1]}.prunned.unique.ast.png")
-
+    return tree
 
 if __name__ == "__main__":
     main()
