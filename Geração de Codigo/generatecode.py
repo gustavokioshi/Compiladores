@@ -44,6 +44,7 @@ def geração_de_codigo(tree):
     elif ("declaracao_variaveis" in tree.label):
         if func == None:
             # Variável inteira global
+            global a
             a = ir.GlobalVariable(Module, ir.IntType(32),tree.children[1].label)
             # Inicializa a variavel
             a.initializer = ir.Constant(ir.IntType(32), 0)
@@ -54,6 +55,7 @@ def geração_de_codigo(tree):
         else:
             # Variável inteira 
             # Aloca na memória variável a do tipo inteiro 
+
             c = builder.alloca(ir.IntType(32), name=tree.children[1].label)
             # Define o alinhamento
             c.align = 4
@@ -63,6 +65,16 @@ def geração_de_codigo(tree):
             builder.store(num1, c)
 
     elif ("atribuicao" in tree.label):
+        print(tree.children[1].type)
+        if (tree.children[1].type == "VALOR"):
+            builder.store(ir.Constant(ir.IntType(32), 2), a)
+        if (tree.children[1].type == "ID"):
+            a_temp = builder.load(a, "")
+            builder.store(a_temp, b)
+        # a_temp = builder.load(a, "")
+        # b_temp = builder.load(b, "")
+        # add_temp = builder.add(a_temp, b_temp, name='temp', flags=())
+        # Armazena o temp (a + b) no c
         print("atribuicao")
     elif ("cabecalho" in tree.label):
         print("cabecalho")
@@ -81,9 +93,6 @@ def main():
     global Module
     tree = tppsemantic2.main()    
     print()
-
-    # UniqueDotExporter(tree).to_picture(f"{sys.argv[1]}.prunned.unique.ast.png")
-    # print(f"Árvore Sintática Abstrata foi gerada. \nArquivo de Saída: {sys.argv[1]}.prunned.unique.ast.png")
 
     # Código de Inicialização.
     llvm.initialize()
