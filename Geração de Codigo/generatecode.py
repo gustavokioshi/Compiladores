@@ -6,14 +6,34 @@ from anytree.exporter import UniqueDotExporter
 from llvmlite import ir
 from llvmlite import binding as llvm
 
+# Código de Inicialização.
+llvm.initialize()
+llvm.initialize_all_targets()
+llvm.initialize_native_target()
+llvm.initialize_native_asmprinter()
+
+# Cria o módulo.
+Module = ir.Module('modulo.bc')
+Module.triple = llvm.get_process_triple()
+target = llvm.Target.from_triple(Module.triple)
+target_machine = target.create_target_machine()
+Module.data_layout = target_machine.target_data
+
+
 global func
 global builder
-global Module
+global val
+global val_ende
+val = []
+val_ende = []
 func = None
 def geração_de_codigo(tree):
     global func
     global builder
     global Module
+    global val
+    global val_ende
+    global exitBasicBlock
     if ("declaracao_funcao" in tree.label):
         func = tree.children[1].label
         print(func)
@@ -42,9 +62,10 @@ def geração_de_codigo(tree):
         print("chamada_funcao")
         
     elif ("declaracao_variaveis" in tree.label):
+        print("declaracao_variaveis")
+        
         if func == None:
             # Variável inteira global
-            global a
             a = ir.GlobalVariable(Module, ir.IntType(32),tree.children[1].label)
             # Inicializa a variavel
             a.initializer = ir.Constant(ir.IntType(32), 0)
@@ -55,27 +76,30 @@ def geração_de_codigo(tree):
         else:
             # Variável inteira 
             # Aloca na memória variável a do tipo inteiro 
-
-            c = builder.alloca(ir.IntType(32), name=tree.children[1].label)
+            a = builder.alloca(ir.IntType(32), name=tree.children[1].label)
             # Define o alinhamento
-            c.align = 4
+            a.align = 4
             # Cria uma constante pra armazenar o numero 0
             num1 = ir.Constant(ir.IntType(32),0)
             # Armazena o 0 na variavel 
-            builder.store(num1, c)
+            builder.store(num1, a)
+        val.append(tree.children[1].label)
+        val_ende.append(a)
 
     elif ("atribuicao" in tree.label):
-        print(tree.children[1].type)
+        print(val_ende)
         if (tree.children[1].type == "VALOR"):
-            builder.store(ir.Constant(ir.IntType(32), 2), a)
+            for i in range(len(val)):
+                if val[i]== tree.children[0].label:
+                    builder.store(ir.Constant(ir.IntType(32), int(tree.children[1].label) ), val_ende[i])
+
         if (tree.children[1].type == "ID"):
-            a_temp = builder.load(a, "")
-            builder.store(a_temp, b)
-        # a_temp = builder.load(a, "")
-        # b_temp = builder.load(b, "")
-        # add_temp = builder.add(a_temp, b_temp, name='temp', flags=())
-        # Armazena o temp (a + b) no c
+            for i in range(len(val)):
+                if val[i]== tree.children[0].label:
+                    temp_a = builder.load(val_ende[i])
+            builder.store(temp_a, val_ende[i])
         print("atribuicao")
+
     elif ("cabecalho" in tree.label):
         print("cabecalho")
 
@@ -83,29 +107,27 @@ def geração_de_codigo(tree):
         print("corpo")
 
     elif ("retorna" in tree.label):
+        # Cria um salto para o bloco de saída
+        builder.branch(exitBasicBlock)
+
+        # Adiciona o bloco de saida
+        builder.position_at_end(exitBasicBlock)
+        
+        for i in range(len(val)):
+            if val[i]== tree.children[0].label:
+                builder.ret(builder.load(val_ende[i], ""))
         print("retorna")
 
     else:
         for filho in tree.children:
             geração_de_codigo(filho)
 def main():
-    global builder
-    global Module
     tree = tppsemantic2.main()    
     print()
 
-    # Código de Inicialização.
-    llvm.initialize()
-    llvm.initialize_all_targets()
-    llvm.initialize_native_target()
-    llvm.initialize_native_asmprinter()
+    # UniqueDotExporter(tree).to_picture(f"{sys.argv[1]}.prunned.unique.ast.png")
+    # print(f"Árvore Sintática Abstrata foi gerada. \nArquivo de Saída: {sys.argv[1]}.prunned.unique.ast.png")
 
-    # Cria o módulo.
-    Module = ir.Module('modulo.bc')
-    Module.triple = llvm.get_process_triple()
-    target = llvm.Target.from_triple(Module.triple)
-    target_machine = target.create_target_machine()
-    Module.data_layout = target_machine.target_data
 
     geração_de_codigo(tree)
     arquivo = open('vars.ll', 'w')

@@ -10,7 +10,11 @@ entry:
   store i32 0, i32* %"retorno"
   %"b" = alloca i32, align 4
   store i32 0, i32* %"b"
-  store i32 2, i32* @"a"
-  store i32 2, i32* @"a"
+  store i32 10, i32* @"a"
+  %".5" = load i32, i32* %"b"
+  store i32 %".5", i32* %"b"
+  br label %"exit"
 exit:
+  %".8" = load i32, i32* %"b"
+  ret i32 %".8"
 }
