@@ -343,13 +343,6 @@ def retira_no(no_remove):
                 aux_tree.append(no_pai.children[filho])
         no_pai.children = aux_tree
 
-    if (no_remove.label in verificar_nos):
-        for filho in range(len(no_pai.children)):
-            if no_pai.children[filho].label ==  no_remove.label:
-                aux_tree += no_remove.children
-            else:
-                aux_tree.append(no_pai.children[filho])
-        no_pai.children = aux_tree
         
 def poda_arvore(tree):
     for filho in tree.children:
@@ -368,12 +361,12 @@ def main():
     # verifica_regras_semanticas()
 
     # Nós que serao mantidos
-    verificar_nos = ['retorna', 'corpo', 'cabecalho', 'atribuicao', 'chamada_funcao', 'declaracao_variaveis']
+    verificar_nos = ['retorna', 'atribuicao','senão','chamada_funcao', 'declaracao_variaveis', 'tipo', 'leia', 'escreva','se', 'repita', 'até']
 
     # Nós que serão removidos na poda
-    remover_nos = ['ID', 'var', 'dois_pontos', 'tipo', 'leia', 'escreva','se', 'repita', 'até',
+    remover_nos = ['ID', 'var', 'dois_pontos','tipo', 'cabecalho','MENOR','IGUAL',
                     'INTEIRO',  'NUM_INTEIRO', 'declaracao', 'indice', 'lista_declaracoes',
-                    'numero', 'fator','abre_colchete', 'fecha_colchete', 'menos', 'menor_igual',
+                    'numero','abre_colchete', 'fecha_colchete', 'menos', 'menor_igual',
                     'maior_igual','expressao', 'expressao_logica',  'ABRE_PARENTESE', 'FECHA_PARENTESE', 
                     'MAIS', 'MENOS','expressao_simples', 'expressao_multiplicativa', 'vazio','fim',
                     'expressao_unaria', 'inicializacao_variaveis', 'ATRIBUICAO','NUM_NOTACAO_CIENTIFICA', 'LEIA', 
