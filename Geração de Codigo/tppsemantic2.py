@@ -360,11 +360,8 @@ def main():
     print(Table)
     # verifica_regras_semanticas()
 
-    # Nós que serao mantidos
-    verificar_nos = ['retorna', 'atribuicao','senão','chamada_funcao', 'declaracao_variaveis', 'tipo', 'leia', 'escreva','se', 'repita', 'até']
-
     # Nós que serão removidos na poda
-    remover_nos = ['ID', 'var', 'dois_pontos','tipo', 'cabecalho','MENOR','IGUAL',
+    remover_nos = ['ID', 'var', 'dois_pontos','tipo', 'cabecalho','MENOR','IGUAL','ATE',
                     'INTEIRO',  'NUM_INTEIRO', 'declaracao', 'indice', 'lista_declaracoes',
                     'numero','abre_colchete', 'fecha_colchete', 'menos', 'menor_igual',
                     'maior_igual','expressao', 'expressao_logica',  'ABRE_PARENTESE', 'FECHA_PARENTESE', 

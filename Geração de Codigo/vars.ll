@@ -11,6 +11,15 @@ entry:
   store i32 0, i32* %"retorno"
   store i32 10, i32* @"n"
   store i32 0, i32* @"soma"
+  br label %"loop"
+loop:
+  br label %"loop_val"
+loop_val:
+  %"a_cmp" = load i32, i32* @"n", align 4
+  %".7" = icmp eq i32 %"a_cmp", 0
+  br i1 %".7", label %"loop_end", label %"loop"
+loop_end:
   br label %"exit"
 exit:
+  ret i32 0
 }

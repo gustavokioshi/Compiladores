@@ -47,7 +47,6 @@ def geração_de_codigo(tree):
         main = ir.Function(Module, t_func_main, name=tree.children[1].label)
         # Declara os blocos de entrada e saída da função.
         entryBlock = main.append_basic_block('entry')
-        exitBasicBlock = main.append_basic_block('exit')
 
         # Adiciona o bloco de entrada.
         builder = ir.IRBuilder(entryBlock)
@@ -88,24 +87,50 @@ def geração_de_codigo(tree):
         val_ende.append(a)
 
     elif ("atribuicao" in tree.label):
-        # tipo numero x=1
-        if (tree.children[1].type == "VALOR"):
-            for i in range(len(val)):
-                if val[i]== tree.children[0].label:
-                    builder.store(ir.Constant(ir.IntType(32), int(tree.children[1].label) ), val_ende[i])
-        # tipo letra x=y
-        if (tree.children[1].type == "ID"):
-            for i in range(len(val)):
-                if val[i]== tree.children[0].label:
-                    temp_a = builder.load(val_ende[i])
-            builder.store(temp_a, val_ende[i])
-        if (tree.children[1].type == "MENOR"):
-            for i in range(len(val)):
-                if val[i]== tree.children[0].label:
-                    temp_a = builder.load(val_ende[i])
-            builder.store(temp_a, val_ende[i])
-        print("atribuicao")
+        if len(tree.children) == 2:
+            # tipo numero x=1
+            if (tree.children[1].type == "VALOR"):
+                for i in range(len(val)):
+                    if val[i]== tree.children[0].label:
+                        builder.store(ir.Constant(ir.IntType(32), int(tree.children[1].label) ), val_ende[i])
+            # tipo letra x=y
+            if (tree.children[1].type == "ID"):
+                for i in range(len(val)):
+                    if val[i]== tree.children[0].label:
+                        temp_a = builder.load(val_ende[i])
+                builder.store(temp_a, val_ende[i])
+        elif len(tree.children) == 4:
 
+            if (tree.children[1].type == "VALOR"):
+                for i in range(len(val)):
+                    if val[i]== tree.children[1].label:
+                        x_temp = ir.Constant(ir.IntType(32), int(tree.children[1].label))
+            # tipo letra x=y
+            if (tree.children[1].type == "ID"):
+                for i in range(len(val)):
+                    if val[i]== tree.children[1].label:
+                        x_temp = builder.load(val_ende[i])
+            if (tree.children[3].type == "VALOR"):
+                for i in range(len(val)):
+                    if val[i]== tree.children[3].label:
+                        y_temp = ir.Constant(ir.IntType(32), int(tree.children[3].label))
+            # tipo letra x=y
+            if (tree.children[3].type == "ID"):
+                for i in range(len(val)):
+                    if val[i]== tree.children[3].label:
+                        y_temp = builder.load(val_ende[i])
+            if tree.children[2].label == '+':
+                builder.add(x_temp, y_temp)
+            elif tree.children[2].label == '-':
+                builder.sub(x_temp, y_temp)
+            elif tree.children[2].label == '*':
+                builder.mul(x_temp, y_temp)
+            elif tree.children[2].label == '/':      
+                builder.sdiv(x_temp, y_temp)
+            elif tree.children[2].label == '%':
+                builder.srem(x_temp, y_temp)
+        print("atribuicao")
+        
     elif ("cabecalho" in tree.label):
         print("cabecalho")
 
@@ -163,8 +188,11 @@ def geração_de_codigo(tree):
         # Posiciona no inicio do bloco do loop
         builder.position_at_end(loop)
 
-        for filho in tree.children:
-            geração_de_codigo(filho)
+        for filho in range(len(tree.children)):
+            if filho == 0:
+                filho = 0
+            else:
+                geração_de_codigo(tree.children[filho])
 
         # Pula para o laço de validação
         builder.branch(loop_val)
@@ -179,25 +207,36 @@ def geração_de_codigo(tree):
                 temp_a = val_ende[i]
                 a_cmp = builder.load(temp_a, 'a_cmp', align=4)
         # Gera a expressão de comparação
-        sumExpression = builder.icmp_signed(tree.children[4].label, iVarLoad, comperValue, name='expressao_soma')
+
+        # transformação para que alinguagem possa compreender o operador de comparação
+        if tree.children[4].label == "=":
+            operator = "=="
+        sumExpression = builder.icmp_signed(operator, a_cmp, comperValue)
 
         # Compara se a expressão é verdadeira ou não, caso for pula para o bloco do loop end, caso contrário pula para o bloco do loop
         builder.cbranch(sumExpression, loop_end, loop)
 
         # Posiciona no inicio do bloco do fim do loop (saída do laço) e define o que o será executado após o fim (o resto do programa)  
         builder.position_at_end(loop_end)
-
+    elif ("escreva" in tree.label):
+        print("escreva")
     elif ("retorna" in tree.label):
         # Cria um salto para o bloco de saída
+
+        exitBasicBlock = main.append_basic_block('exit')
         builder.branch(exitBasicBlock)
 
         # Adiciona o bloco de saida
         builder.position_at_end(exitBasicBlock)
         
         # variavel de retorno para letra
+        flag = 0
         for i in range(len(val)):
-            if val[i]== tree.children[1].label:
+            if val[i] == tree.children[1].label:
                 builder.ret(builder.load(val_ende[i]))
+                flag = 1
+        if flag == 0:
+            builder.ret(ir.Constant(ir.IntType(32), int(tree.children[1].label)))
         print("retorna")
 
     else:
