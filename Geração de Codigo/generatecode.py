@@ -60,7 +60,10 @@ def geração_de_codigo(tree):
         # Cria função main
         t_func_main = ir.FunctionType(ir.IntType(32), ())
         # Declara função main
-        main = ir.Function(Module, t_func_main, name=tree.children[1].label)
+        if tree.children[1].label == 'principal':
+            main = ir.Function(Module, t_func_main, name = 'main' )
+        else:
+            main = ir.Function(Module, t_func_main, name = tree.children[1].label )
         # Declara os blocos de entrada e saída da função.
         entryBlock = main.append_basic_block(tree.children[1].label+':entry')
 
@@ -98,6 +101,7 @@ def geração_de_codigo(tree):
             num1 = ir.Constant(ir.IntType(32),0)
             # Armazena o 0 na variavel 
             builder.store(num1, a)
+
         val.append(tree.children[1].label)
         val_ende.append(a)
 
@@ -112,7 +116,7 @@ def geração_de_codigo(tree):
             # tipo letra x=y
             if (tree.children[1].type == "ID"):
                 for i in range(len(val)):
-                    if val[i]== tree.children[0].label:
+                    if val[i] == tree.children[0].label:
                         temp_a = builder.load(val_ende[i])
                 builder.store(temp_a, val_ende[i])
         # atribuicao com alguma operacao
@@ -158,11 +162,12 @@ def geração_de_codigo(tree):
         ifend_1 = main.append_basic_block('ifend_1')
 
         # Carrega as variáveis a e b para comparação.
+        print(val_ende)
         for i in range(len(val)):
             if val[i]== tree.children[1].label:
                 temp_a = val_ende[i]
                 a_cmp = builder.load(temp_a, 'a_cmp', align=4)
-            if val[i]== tree.children[3].label:
+            elif val[i]== tree.children[3].label:
                 temp_c = tree.children[3].label
                 c_cmp = builder.load(temp_c, 'b_cmp', align=4)
             else:
@@ -211,7 +216,9 @@ def geração_de_codigo(tree):
         builder.position_at_end(loop_val)
 
         # Valor de comparação
-        comperValue = ir.Constant(ir.IntType(32), int(tree.children[5].label)) 
+        # comperValue = ir.Constant(ir.IntType(32), int(tree.children[5].label)) 
+
+        comperValue = builder.load (tree.children[5].label)
         for i in range(len(val)):
             if val[i]== tree.children[3].label:
                 temp_a = val_ende[i]
@@ -293,8 +300,10 @@ def main():
 
     # UniqueDotExporter(tree).to_picture(f"{sys.argv[1]}.prunned.unique.ast.png")
     # print(f"Árvore Sintática Abstrata foi gerada. \nArquivo de Saída: {sys.argv[1]}.prunned.unique.ast.png")
-
-
+    # llvm-link vars.ll io.ll -o vars-liked.ll 
+    # clang vars-liked.ll -o vars.exe
+    # ./vars.exe 
+    # echo $?
     geração_de_codigo(tree)
     arquivo = open('vars.ll', 'w')
     arquivo.write(str(Module))
