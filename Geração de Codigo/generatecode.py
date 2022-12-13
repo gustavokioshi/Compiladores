@@ -19,6 +19,18 @@ target = llvm.Target.from_triple(Module.triple)
 target_machine = target.create_target_machine()
 Module.data_layout = target_machine.target_data
 
+_escrevaI = ir.FunctionType(ir.VoidType(), [ir.IntType(32)])
+escrevaI = ir.Function(Module, _escrevaI, "escrevaInteiro")
+
+_escrevaF = ir.FunctionType(ir.VoidType(), [ir.FloatType()])
+escrevaF = ir.Function(Module, _escrevaF, "escrevaFlutuante")
+
+_leiaI = ir.FunctionType(ir.IntType(32), [])
+leiaI = ir.Function(Module, _leiaI, "leiaInteiro")
+
+_leiaF = ir.FunctionType(ir.FloatType(), [])
+leiaF = ir.Function(Module, _leiaF, "leiaFlutuante")
+
 
 global func
 global builder
@@ -36,8 +48,12 @@ def geração_de_codigo(tree):
     global val_ende
     global exitBasicBlock
     global main
+    global escrevaI
+    global escrevaF
+    global leiaI
+    global leiaF
     if ("declaracao_funcao" in tree.label):
-        func = tree.children[1].label
+        func = (tree.children[1].label)
         print(func)
         # Define o retorno da função main
         Zero32 = ir.Constant(ir.IntType(32), 0)
@@ -46,18 +62,17 @@ def geração_de_codigo(tree):
         # Declara função main
         main = ir.Function(Module, t_func_main, name=tree.children[1].label)
         # Declara os blocos de entrada e saída da função.
-        entryBlock = main.append_basic_block('entry')
+        entryBlock = main.append_basic_block(tree.children[1].label+':entry')
 
         # Adiciona o bloco de entrada.
         builder = ir.IRBuilder(entryBlock)
 
         # Cria o valor de retorno e inicializa com zero
-        returnVal = builder.alloca(ir.IntType(32), name='retorno')
+        returnVal = builder.alloca(ir.IntType(32))
         builder.store(Zero32, returnVal)
         
         for filho in tree.children:
             geração_de_codigo(filho)
-        func = None
     elif ("chamada_funcao" in tree.label):
         print("chamada_funcao")
         
@@ -87,6 +102,7 @@ def geração_de_codigo(tree):
         val_ende.append(a)
 
     elif ("atribuicao" in tree.label):
+        # atribuicao de um unico valor
         if len(tree.children) == 2:
             # tipo numero x=1
             if (tree.children[1].type == "VALOR"):
@@ -99,26 +115,25 @@ def geração_de_codigo(tree):
                     if val[i]== tree.children[0].label:
                         temp_a = builder.load(val_ende[i])
                 builder.store(temp_a, val_ende[i])
+        # atribuicao com alguma operacao
         elif len(tree.children) == 4:
-
+            #x = 1 + _
             if (tree.children[1].type == "VALOR"):
-                for i in range(len(val)):
-                    if val[i]== tree.children[1].label:
-                        x_temp = ir.Constant(ir.IntType(32), int(tree.children[1].label))
-            # tipo letra x=y
+                x_temp = ir.Constant(ir.IntType(32), int(tree.children[1].label))
+            #x = y + _
             if (tree.children[1].type == "ID"):
                 for i in range(len(val)):
                     if val[i]== tree.children[1].label:
                         x_temp = builder.load(val_ende[i])
+            #x = _ + 1
             if (tree.children[3].type == "VALOR"):
-                for i in range(len(val)):
-                    if val[i]== tree.children[3].label:
-                        y_temp = ir.Constant(ir.IntType(32), int(tree.children[3].label))
-            # tipo letra x=y
+                y_temp = ir.Constant(ir.IntType(32), int(tree.children[3].label))
+            #x = _ + y
             if (tree.children[3].type == "ID"):
                 for i in range(len(val)):
                     if val[i]== tree.children[3].label:
                         y_temp = builder.load(val_ende[i])
+            # operacoes 
             if tree.children[2].label == '+':
                 builder.add(x_temp, y_temp)
             elif tree.children[2].label == '-':
@@ -134,21 +149,15 @@ def geração_de_codigo(tree):
     elif ("cabecalho" in tree.label):
         print("cabecalho")
 
+
+
     elif ("se" in tree.label):
         print("se")
-        # Declara os blocos básicos para o primeiro if.
-        #	if(a < b) {
-        #		c = 5; 
-        #	}
-        #	else {
-        #		c = 6;
-        #	}
         iftrue_1 = main.append_basic_block('iftrue_1')
         iffalse_1 = main.append_basic_block('iffalse_1')
         ifend_1 = main.append_basic_block('ifend_1')
 
         # Carrega as variáveis a e b para comparação.
-        # IRBuilder.load(ptr, name='', align=None)
         for i in range(len(val)):
             if val[i]== tree.children[1].label:
                 temp_a = val_ende[i]
@@ -175,6 +184,7 @@ def geração_de_codigo(tree):
             geração_de_codigo(filho)
         builder.branch(ifend_1)
         builder.position_at_end(ifend_1)
+
 
     elif ("repita" in tree.label):
         print("repita")
@@ -219,6 +229,11 @@ def geração_de_codigo(tree):
         # Posiciona no inicio do bloco do fim do loop (saída do laço) e define o que o será executado após o fim (o resto do programa)  
         builder.position_at_end(loop_end)
     elif ("escreva" in tree.label):
+        # Invoca a função 'escrevaI', carregando o valor da variável 'a'
+        # e o passando como argumento
+        for i in range(len(val)):
+            if val[i] == tree.children[1].label:
+                builder.call(escrevaI, args=[builder.load(val_ende[i])])
         print("escreva")
     elif ("retorna" in tree.label):
         # Cria um salto para o bloco de saída
@@ -231,12 +246,42 @@ def geração_de_codigo(tree):
         
         # variavel de retorno para letra
         flag = 0
-        for i in range(len(val)):
-            if val[i] == tree.children[1].label:
-                builder.ret(builder.load(val_ende[i]))
-                flag = 1
-        if flag == 0:
-            builder.ret(ir.Constant(ir.IntType(32), int(tree.children[1].label)))
+        if len(tree.children) == 2:
+            for i in range(len(val)):
+                if val[i] == tree.children[1].label:
+                    builder.ret(builder.load(val_ende[i]))
+                    flag = 1
+            if flag == 0:
+                builder.ret(ir.Constant(ir.IntType(32), int(tree.children[1].label)))
+        elif len(tree.children) == 4:
+            #x = 1 + _
+            if (tree.children[1].type == "VALOR"):
+                x_temp = ir.Constant(ir.IntType(32), int(tree.children[1].label))
+            #x = y + _
+            if (tree.children[1].type == "ID"):
+                for i in range(len(val)):
+                    if val[i]== tree.children[1].label:
+                        x_temp = builder.load(val_ende[i])
+            #x = _ + 1
+            if (tree.children[3].type == "VALOR"):
+                y_temp = ir.Constant(ir.IntType(32), int(tree.children[3].label))
+            #x = _ + y
+            if (tree.children[3].type == "ID"):
+                for i in range(len(val)):
+                    if val[i]== tree.children[3].label:
+                        y_temp = builder.load(val_ende[i])
+            # operacoes 
+            if tree.children[2].label == '+':
+                builder.add(x_temp, y_temp)
+            elif tree.children[2].label == '-':
+                builder.sub(x_temp, y_temp)
+            elif tree.children[2].label == '*':
+                builder.mul(x_temp, y_temp)
+            elif tree.children[2].label == '/':      
+                builder.sdiv(x_temp, y_temp)
+            elif tree.children[2].label == '%':
+                builder.srem(x_temp, y_temp)
+        func= None
         print("retorna")
 
     else:
