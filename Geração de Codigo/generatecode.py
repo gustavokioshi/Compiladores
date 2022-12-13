@@ -106,6 +106,8 @@ def geração_de_codigo(tree):
         val_ende.append(a)
 
     elif ("atribuicao" in tree.label):
+        print(val_ende)
+        print(val)
         # atribuicao de um unico valor
         if len(tree.children) == 2:
             # tipo numero x=1
@@ -116,9 +118,11 @@ def geração_de_codigo(tree):
             # tipo letra x=y
             if (tree.children[1].type == "ID"):
                 for i in range(len(val)):
-                    if val[i] == tree.children[0].label:
+                    if val[i] == tree.children[1].label:
                         temp_a = builder.load(val_ende[i])
-                builder.store(temp_a, val_ende[i])
+                for i in range(len(val)):
+                    if val[i] == tree.children[0].label:
+                        builder.store(temp_a, val_ende[i])
         # atribuicao com alguma operacao
         elif len(tree.children) == 4:
             #x = 1 + _
