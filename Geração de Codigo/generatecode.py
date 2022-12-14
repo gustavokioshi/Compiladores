@@ -55,6 +55,13 @@ def geração_de_codigo(tree):
     if ("declaracao_funcao" in tree.label):
         func = (tree.children[1].label)
         print(func)
+        #tem parametro
+        if tree.children[1].label == 'soma':
+            # Cria o cabeçalho da função soma
+            t_soma = ir.FunctionType(ir.IntType(32), [ir.IntType(32), ir.IntType(32)])
+            soma = ir.Function(Module, t_soma, 'soma')
+            soma.args[0].name = 'a'
+            soma.args[1].name = 'b'
         # Define o retorno da função main
         Zero32 = ir.Constant(ir.IntType(32), 0)
         # Cria função main
@@ -95,13 +102,13 @@ def geração_de_codigo(tree):
             # Variável inteira 
             # Aloca na memória variável a do tipo inteiro 
             a = builder.alloca(ir.IntType(32), name=tree.children[1].label)
+            # Inicializa a variavel
+            a.initializer = ir.Constant(ir.IntType(32), 0)
             # Define o alinhamento
             a.align = 4
             # Cria uma constante pra armazenar o numero 0
-            num1 = ir.Constant(ir.IntType(32),0)
             # Armazena o 0 na variavel 
-            builder.store(num1, a)
-
+            builder.store(a)
         val.append(tree.children[1].label)
         val_ende.append(a)
 
@@ -141,17 +148,21 @@ def geração_de_codigo(tree):
                 for i in range(len(val)):
                     if val[i]== tree.children[3].label:
                         y_temp = builder.load(val_ende[i])
+            for i in range(len(val)):
+                if val[i]== tree.children[0].label:
+                    r_temp = val_ende[i]
             # operacoes 
             if tree.children[2].label == '+':
-                builder.add(x_temp, y_temp)
+                a_temp = builder.add(x_temp, y_temp)
             elif tree.children[2].label == '-':
-                builder.sub(x_temp, y_temp)
+                a_temp = builder.sub(x_temp, y_temp)
             elif tree.children[2].label == '*':
-                builder.mul(x_temp, y_temp)
+                a_temp = builder.mul(x_temp, y_temp)
             elif tree.children[2].label == '/':      
-                builder.sdiv(x_temp, y_temp)
-            elif tree.children[2].label == '%':
-                builder.srem(x_temp, y_temp)
+                a_temp = builder.sdiv(x_temp, y_temp)
+
+            builder.store(a_temp ,r_temp )
+            
         print("atribuicao")
         
     elif ("cabecalho" in tree.label):
@@ -170,12 +181,14 @@ def geração_de_codigo(tree):
         for i in range(len(val)):
             if val[i]== tree.children[1].label:
                 temp_a = val_ende[i]
-                a_cmp = builder.load(temp_a, 'a_cmp', align=4)
-            elif val[i]== tree.children[3].label:
+                a_cmp = builder.load(temp_a, align=4)
+        for i in range(len(val)):
+            if val[i]== tree.children[3].label:
                 temp_c = tree.children[3].label
-                c_cmp = builder.load(temp_c, 'b_cmp', align=4)
+                c_cmp = builder.load(temp_c, align=4)
+                break
             else:
-                c_cmp = ir.Constant(ir.IntType(32), val_ende[i])
+                c_cmp = ir.Constant(ir.IntType(32), int(tree.children[3].label))
 
 
         #  IRBuilder.icmp_signed(cmpop, lhs, rhs, name='')
@@ -220,9 +233,10 @@ def geração_de_codigo(tree):
         builder.position_at_end(loop_val)
 
         # Valor de comparação
-        # comperValue = ir.Constant(ir.IntType(32), int(tree.children[5].label)) 
-
-        comperValue = builder.load (tree.children[5].label)
+        if (tree.children[5].type == "VALOR"):
+            comperValue = ir.Constant(ir.IntType(32), int(tree.children[5].label)) 
+        elif (tree.children[5].type == "ID"):
+            comperValue = builder.load (tree.children[5].label)
         for i in range(len(val)):
             if val[i]== tree.children[3].label:
                 temp_a = val_ende[i]
