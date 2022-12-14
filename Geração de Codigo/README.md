@@ -1,9 +1,14 @@
 # Projeto de Implementação de um Compilador para a Linguagem TPP: Geração de Codigo (Trabalho – 4ª parte)
 #### Gustavo Kioshi Asato
 #### Ciencia da Computação – Universidade Tecnológica Federal do Paraná (UTFPR)
+
 ## 1 Geração de Codigo
-Nessa atividade desenvolvida durante a disciplina de Compiladores tem em foco desenvolver um analisador semantico que funcina como um sistema de varedura no codigo a ser compilado, separando os tokens. Os tokens são definidos no compilador sendo palavras reservadas ou símbolos dispinilizados em formato de arvore pelo analise sintatica. Cada token pode receber os proximos caracteres de acordo com a sua implementação de forma com que cada token possa ter uma entrada necessaria para retornar para oque foi designada.
-O teste a ser analizado 'sema005.tpp'.
+Nessa atividade, discutiremos uma implementação de geração de código. A geração de código é uma técnica utilizada por desenvolvedores para automatizar a criação de código fonte de programas de computador a partir de uma especificação ou de um modelo de alto nível. Isso pode ajudar a economizar tempo e esforço, além de garantir a consistência e a qualidade do código gerado. A implementação de geração de código é baseada em regras de transformação que são aplicadas a um modelo de alto nível, produzindo código fonte em uma linguagem de programação específica. Além disso, a nossa implementação inclui recursos para testar e validar o código gerado, garantindo sua correção e funcionalidade.
+
+### 2 Especificação da Linguagem T++
+Com base na arvore gerada no tppparse.py ela é podada de forma que possua somente a parte mais importante das ações realizadas no codigo. Sendo percorrida da direita para a esquerda 
+![image](geracao-codigo-testes/gencode-017.tpp.prunned.unique.ast.png)
+
 ~~~TPP
 {Erro: Chamada à função 'func' com número de parâmetros menor que o declarado}
 {Erro: Função principal deveria retornar inteiro, mas retorna vazio}
@@ -17,24 +22,6 @@ inteiro principal()
 	a := func(10)
 fim
 ~~~
-
-### 2 Tabela de Simbolos
-Durante a analise Semantica ha dois objetivos que devem ser completados, sendo eles a construcao da tabela de simbolos, e a identificacao de erros e avisos, assim como os erros e avisos esperados no conjunto de testes especificamente para analise semantica, e por fim, podar a arvore Sintatica, o que resultara em uma arvore sintatica abstrata. A criacao da tabela de simbolos neste caso for felta durante a propria analise Semantica, mais especificamente, antes de verificar as regras semanticas, ja que ela sera utilizada para realizar este passo. A tabela gerada ao fim e semelhante a tabela abaixo.
-
-| Token |   Lexema  |   Tipo  | dim | tam_dim1 | tam_dim2 |   escopo  | init | linha | funcao |      parametros      |        valor         | retorno |
-|-------|-----------|---------|-----|----------|----------|-----------|------|-------|--------|----------------------|----------------------|---------|
-|   ID  |    func   | inteiro |  0  |    0     |    0     |   global  |  N   |   4   |   S    | |inteiro=x|inteiro=y | |inteiro=x|inteiro=y |    S    |
-|   id  |     x     | inteiro |  0  |    0     |    0     |    func   |  N   |   4   |   N    |         None         |                      |  vazio  |
-|   id  |     y     | inteiro |  0  |    0     |    0     |    func   |  N   |   4   |   N    |         None         |                      |  vazio  |
-|   ID  |     x     |   None  |  0  |    0     |    0     |    func   |  N   |   5   |   N    |         None         |         None         |  vazio  |
-|   ID  |     y     |   None  |  0  |    0     |    0     |    func   |  N   |   5   |   N    |         None         |         None         |  vazio  |
-|   ID  | principal | inteiro |  0  |    0     |    0     |   global  |  N   |   8   |   S    |                      |                      |  vazio  |
-|   ID  |     a     | inteiro |  0  |    0     |    0     | principal |  N   |   9   |   N    |         None         |                      |  vazio  |
-|   ID  |     a     |   None  |  0  |    0     |    0     | principal |  S   |   10  |   N    |         None         |                      |  vazio  |
-|   ID  |    func   |   None  |  0  |    0     |    0     | principal |  N   |   10  |   N    |         None         |         None         |  vazio  |
-|   ID  |    func   |   None  |  0  |    0     |    0     | principal |  S   |   10  |   S    |         |10          |         |10          |  vazio  |
-
-A Tabela de Simbolos contem de acordo com a necessidade de elementos nas colunas. A coluna 'Token' representa o token da variavel ou funcao que faz parte da tabela de simbolos, a coluna 'Lexema' contem o nome das variaveis declaradas ou utilizadas, assim como o nome das funcoes declaradas ou chamada, a coluna 'Tipo' contem o tipo das variaveis ou funcoes declaradas, a colunas 'dim' contera '0' caso seja , e caso ela contenha mais de uma dimensao, os valores dessas dimensoes nas colunas'tam-diml' que representa o tamanho da primeira dimensao e 'tam-dim2', a qual representa o tamanho da segunda dimensao.'init' representa se uma funcao ou variavel foi declarada ou nao, dizendo na coluna 'linha' em que linha do codigo esta. A coluna funcao permite saber se é declarado em que funcao. Os parametros são oque passa pela funcao tanto na hora de criar quanto na hora de ler.O valor é oque foi atribuido para a variavel. E por utimo o retorno permite saber se a funcao retorna algum valor.
 
 
 ## 3 Regras Semânticas
