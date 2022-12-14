@@ -10,16 +10,19 @@ Com base na arvore gerada no tppparse.py ela é podada de forma que possua somen
 ![image](geracao-codigo-testes/gencode-017.tpp.prunned.unique.ast.png)
 
 ~~~TPP
-{Erro: Chamada à função 'func' com número de parâmetros menor que o declarado}
-{Erro: Função principal deveria retornar inteiro, mas retorna vazio}
-
-inteiro func(inteiro: x, inteiro: y)
-	retorna(x + y)
-fim
-
-inteiro principal()
-	inteiro: a
-	a := func(10)
+inteiro principal()	
+	inteiro: x
+	flutuante: y
+	
+	x := 0
+	y := 0.0
+	
+	leia(x)
+	leia(y)
+	escreva(x)
+	escreva(y)
+	
+    retorna(0)
 fim
 ~~~
 
