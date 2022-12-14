@@ -1,7 +1,7 @@
-# Projeto de Implementação de um Compilador para a Linguagem TPP: Análise Semantica (Trabalho – 3ª parte)
+# Projeto de Implementação de um Compilador para a Linguagem TPP: Geração de Codigo (Trabalho – 4ª parte)
 #### Gustavo Kioshi Asato
 #### Ciencia da Computação – Universidade Tecnológica Federal do Paraná (UTFPR)
-## 1 Análise Semantica
+## 1 Geração de Codigo
 Nessa atividade desenvolvida durante a disciplina de Compiladores tem em foco desenvolver um analisador semantico que funcina como um sistema de varedura no codigo a ser compilado, separando os tokens. Os tokens são definidos no compilador sendo palavras reservadas ou símbolos dispinilizados em formato de arvore pelo analise sintatica. Cada token pode receber os proximos caracteres de acordo com a sua implementação de forma com que cada token possa ter uma entrada necessaria para retornar para oque foi designada.
 O teste a ser analizado 'sema005.tpp'.
 ~~~TPP
