@@ -102,13 +102,12 @@ def geração_de_codigo(tree):
             # Variável inteira 
             # Aloca na memória variável a do tipo inteiro 
             a = builder.alloca(ir.IntType(32), name=tree.children[1].label)
-            # Inicializa a variavel
-            a.initializer = ir.Constant(ir.IntType(32), 0)
             # Define o alinhamento
             a.align = 4
             # Cria uma constante pra armazenar o numero 0
+            num1 = ir.Constant(ir.IntType(32),0)
             # Armazena o 0 na variavel 
-            builder.store(a)
+            builder.store(num1, a)
         val.append(tree.children[1].label)
         val_ende.append(a)
 
@@ -260,6 +259,18 @@ def geração_de_codigo(tree):
             if val[i] == tree.children[1].label:
                 builder.call(escrevaI, args=[builder.load(val_ende[i])])
         print("escreva")
+    elif ("leia" in tree.label):
+        # Invoca a função 'leiaI', carregando o valor da variável 'a'
+        # Aloca variável 'a'
+        for i in range(len(val)):
+            if val[i] == tree.children[1].label:
+                builder.load(val_ende[i], align=4)
+                break
+        # Invoca a função 'leiaI' e salva o resultado no ponteiro
+        # que representa a variável 'a'
+        resultado_leia = builder.call(leiaI, args=[])
+        builder.store(resultado_leia, val_ende[i], align=4)
+        print("leia")
     elif ("retorna" in tree.label):
         # Cria um salto para o bloco de saída
 

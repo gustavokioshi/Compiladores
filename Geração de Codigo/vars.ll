@@ -10,32 +10,27 @@ declare i32 @"leiaInteiro"()
 
 declare float @"leiaFlutuante"()
 
-@"n" = common global i32 0, align 4
-@"soma" = common global i32 0, align 4
 define i32 @"main"()
 {
 "principal:entry":
   %".2" = alloca i32
   store i32 0, i32* %".2"
-  store i32 10, i32* @"n"
-  store i32 0, i32* @"soma"
-  br label %"loop"
-loop:
-  %".7" = load i32, i32* @"soma"
-  %".8" = load i32, i32* @"n"
-  %".9" = add i32 %".7", %".8"
-  store i32 %".9", i32* @"soma"
-  %".11" = load i32, i32* @"n"
-  %".12" = sub i32 %".11", 1
-  store i32 %".12", i32* @"n"
-  br label %"loop_val"
-loop_val:
-  %"a_cmp" = load i32, i32* @"n", align 4
-  %".15" = icmp eq i32 %"a_cmp", 0
-  br i1 %".15", label %"loop_end", label %"loop"
-loop_end:
-  %".17" = load i32, i32* @"soma"
-  call void @"escrevaInteiro"(i32 %".17")
+  %"x" = alloca i32, align 4
+  store i32 0, i32* %"x"
+  %"y" = alloca i32, align 4
+  store i32 0, i32* %"y"
+  store i32 0, i32* %"x"
+  store i32 0, i32* %"y"
+  %".8" = load i32, i32* %"x", align 4
+  %".9" = call i32 @"leiaInteiro"()
+  store i32 %".9", i32* %"x", align 4
+  %".11" = load i32, i32* %"y", align 4
+  %".12" = call i32 @"leiaInteiro"()
+  store i32 %".12", i32* %"y", align 4
+  %".14" = load i32, i32* %"x"
+  call void @"escrevaInteiro"(i32 %".14")
+  %".16" = load i32, i32* %"y"
+  call void @"escrevaInteiro"(i32 %".16")
   br label %"exit"
 exit:
   ret i32 0
