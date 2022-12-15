@@ -87,6 +87,13 @@ roda o executavel
 ~~~
 ./vars.exe 
 ~~~
+executando o ./vars.exe pede para digitar 2 valores que serão mostrados na tela.
+~~~
+2
+5
+2
+5
+~~~
 mostra o retorno da main
 ~~~
 echo $?
@@ -103,7 +110,7 @@ pip install llvmlite
 ~~~
 ## 5 Referencias
 
-https://github.com/rogerioag/llvm-gencode-samples
-https://pypi.org/project/llvmlite
-https://llvmlite.readthedocs.io/en/latest
+-https://github.com/rogerioag/llvm-gencode-samples
+-https://pypi.org/project/llvmlite
+-https://llvmlite.readthedocs.io/en/latest
 
