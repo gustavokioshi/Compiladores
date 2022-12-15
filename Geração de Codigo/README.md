@@ -26,7 +26,7 @@ inteiro principal()
 fim
 ~~~
 
-resultado a ser realizado pela maquina que esta utilizando 
+resultado a ser realizado pela maquina que esta utilizando para gerar o executavel sendo lido em codigo da maquina
 
 ~~~TPP
 ; ModuleID = "modulo.bc"
@@ -67,6 +67,7 @@ exit:
   ret i32 0
 }
 ~~~
+quando rodar o executavel vai pedir dois valores para ser reproduzidos na tela
 
 ## 3 Procedimentos
 Para que seja possivel desenvolver o codigo foi feito em python com a biblioteca llvmlite que possui uma API que LLVM mapeamentop de memória no estilo C++ para python sendo um construtor IR, otimizador, e APIs do compilador JIT são necessárias.
