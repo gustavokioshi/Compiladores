@@ -6,7 +6,7 @@
 Nessa atividade, discutiremos uma implementação de geração de código. A geração de código é uma técnica utilizada por desenvolvedores para automatizar a criação de código fonte de programas de computador a partir de uma especificação ou de um modelo de alto nível. Isso pode ajudar a economizar tempo e esforço, além de garantir a consistência e a qualidade do código gerado. A implementação de geração de código é baseada em regras de transformação que são aplicadas a um modelo de alto nível, produzindo código fonte em uma linguagem de programação específica. Além disso, a nossa implementação inclui recursos para testar e validar o código gerado, garantindo sua correção e funcionalidade.
 
 ### 2 Especificação da Linguagem T++
-Com base na arvore gerada no tppparse.py ela é podada de forma que possua somente a parte mais importante das ações realizadas no codigo. Sendo percorrida da direita para a esquerda 
+Com base na arvore gerada no tppparse.py ela é podada de forma que possua somente a parte mais importante das ações realizadas no codigo. Sendo percorrida da direita para a esquerda realizado no gerador_de_codigo.py verifica o nome da arvore e compara o nome para realizar se o nó é do mesmo tipo para realizar a tradução do codigo.
 ![image](geracao-codigo-testes/gencode-017.tpp.prunned.unique.ast.png)
 Codigo a ser testado pelo compilador na parte de geração de codigo.
 ~~~TPP
@@ -70,7 +70,7 @@ exit:
 quando rodar o executavel vai pedir dois valores para ser reproduzidos na tela
 
 ## 3 Procedimentos
-Para que seja possivel desenvolver o codigo foi feito em python com a biblioteca llvmlite que possui uma API que LLVM mapeamentop de memória no estilo C++ para python sendo um construtor IR, otimizador, e APIs do compilador JIT são necessárias.
+Para rodar o codigo 
 cria o codigo .ll
 ~~~
 python3 generatecode.py geracao-codigo-testes/gencode-017.tpp
@@ -91,7 +91,16 @@ mostra o retorno da main
 ~~~
 echo $?
 ~~~
+## 4 llvmlite
+llvmlite é uma biblioteca Python que fornece um meio para usar o compilador LLVM em Python. LLVM é uma ferramenta de compilação de código de baixo nível que é usada por muitas linguagens de programação, como C, C++ e Rust, para compilar código em um formato que pode ser facilmente executado pelo processador.
 
+A biblioteca llvmlite fornece uma interface Python para o compilador LLVM que permite aos programadores Python acessar as ferramentas do LLVM de dentro de seus programas Python. Isso é útil para várias tarefas, como a geração dinâmica de código, a otimização de código existente e a geração de código para dispositivos como GPUs.
+
+Para usar llvmlite em seu código Python, basta instalar a biblioteca usando o gerenciador de pacotes Python pip:
+
+~~~
+pip install llvmlite
+~~~
 ## 5 Referencias
 
 https://github.com/rogerioag/llvm-gencode-samples
