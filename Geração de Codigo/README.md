@@ -8,7 +8,7 @@ Nessa atividade, discutiremos uma implementação de geração de código. A ger
 ### 2 Especificação da Linguagem T++
 Com base na arvore gerada no tppparse.py ela é podada de forma que possua somente a parte mais importante das ações realizadas no codigo. Sendo percorrida da direita para a esquerda 
 ![image](geracao-codigo-testes/gencode-017.tpp.prunned.unique.ast.png)
-
+Codigo a ser testado pelo compilador na parte de geração de codigo.
 ~~~TPP
 inteiro principal()	
 	inteiro: x
@@ -26,6 +26,7 @@ inteiro principal()
 fim
 ~~~
 
+resultado a ser realizado pela maquina que esta utilizando 
 
 ~~~TPP
 ; ModuleID = "modulo.bc"
@@ -67,32 +68,32 @@ exit:
 }
 ~~~
 
-## 3 Regras Semânticas
-Para que seja possivel criar a Arvore Sintatica Abstrata, e necessario tem um maior conhecimento sobre as regras semanticas aplicada a linguagem. Neste caso a regra semantica foi oferecida pelo professor no documento de especificacao do desenvolvimento desta analise, podendo entao ser observada a seguir.
+## 3 Procedimentos
+Para que seja possivel desenvolver o codigo foi feito em python com a biblioteca llvmlite que possui uma API que LLVM mapeamentop de memória no estilo C++ para python sendo um construtor IR, otimizador, e APIs do compilador JIT são necessárias.
+cria o codigo .ll
+~~~
+python3 generatecode.py geracao-codigo-testes/gencode-017.tpp
+~~~
 
+~~~
+llvm-link vars.ll io.ll -o vars-liked.ll 
+~~~
+cria um executavel
+~~~
+clang vars-liked.ll -o vars.exe
+~~~
+roda o executavel
+~~~
+./vars.exe 
+~~~
+mostra o retorno da main
+~~~
+echo $?
+~~~
 
-
-- Aviso: Variável 'func' não declarada
-- Erro: Função 'principal' deveria retornar 'inteiro', mas retorna vazio
-- Erro: Chamada a função 'func' que não foi declarada
-
-## 3.1 Procedimentos
-- Verificacao se existe uma funcao principal no codigo que serve como funcao de inicializacao
-- Verificar se o tipo retornado da funcao principal e o mesmo do tipo da funcao principal
-- Verificar se a quantidade de parametros de uma chamada de funcao e igual a quantidade de parametros formais de sua definicao
-- Verificar para todas as funcoes se o tipo do valor retornado e compativel com o tipo de retorno declarado
-- Verificar se as funcoes sao declaradas antes de ser chamadas
-- Uma funcao qualquer nao pode chamar a funcao principal
-- É possivel declarar uma funcao e nao utiliza la
-
-## 4 Poda arvore
-Nessa parte realiza a poda da arvore que permite deixar as principais operações que ocorre na arvore sendo as atribuicoes realizadas no codigo os nós são separados para aqueles que serão cortados e os que serão mantidos sendo os matidos 'retorna', 'corpo', 'cabecalho', 'atribuicao', 'chamada_funcao', 'declaracao_variaveis' e os que seão apagados 'ID', 'var', 'dois_pontos', 'tipo', 'leia', 'escreva','se', 'repita', 'até', 'INTEIRO',  'NUM_INTEIRO', 'declaracao', 'indice', 'lista_declaracoes', 'numero', 'fator','abre_colchete', 'fecha_colchete', 'menos', 'menor_igual', 'maior_igual','expressao', 'expressao_logica',  'ABRE_PARENTESE', 'FECHA_PARENTESE', 'MAIS', 'MENOS','expressao_simples', 'expressao_multiplicativa', 'vazio','fim', 'expressao_unaria', 'inicializacao_variaveis', 'ATRIBUICAO','NUM_NOTACAO_CIENTIFICA', 'LEIA', 'abre_parentese', 'fecha_parentese', 'fator', 'FIM','operador_soma', 'expressao_aditiva', 'mais', 'lista_argumentos', 'VIRGULA','virgula', 'lista_parametros', ',', 'FLUTUANTE', 'NUM_PONTO_FLUTUANTE', 'RETORNA', 'ESCREVA', 'SE', 'ENTAO', 'SENAO', 'maior','menor', 'REPITA', 'operador_logico', 'lista_variaveis','acao', 'operador_multiplicacao', 'vezes','id', 'operador_relacional', 'MAIOR', sendo esses os tokens utilizados no codigo.
-
-![image](semantica-testes/sema-005.tpp.prunned.unique.ast.png)
-                    
-antes da poda
-![image](semantica-testes/sema-005.tpp.unique.ast.png)
 ## 5 Referencias
 
-https://anytree.readthedocs.io/en/latest/
+https://github.com/rogerioag/llvm-gencode-samples
+https://pypi.org/project/llvmlite
+https://llvmlite.readthedocs.io/en/latest
 
